@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 FIFA 世界盃｜淘汰賽對陣圖</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #0a1628;
+  color: #fff;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.header {
+  padding: 24px 20px 16px;
+}
+.header .series {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #c8a84b;
+  margin-bottom: 6px;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Tab navigation */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  transition: all 0.2s;
+  user-select: none;
+}
+.tab:hover {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+.tab.active {
+  background: #c8a84b;
+  border-color: #c8a84b;
+  color: #0a1628;
+  font-weight: 700;
+}
+
+/* Round panels */
+.round-panel { display: none; padding: 0 20px; }
+.round-panel.active { display: block; }
+
+/* Bracket layout */
+.bracket-layout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.bracket-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+  flex-shrink: 0;
+}
+
+.bracket-col.center-col {
+  min-width: 260px;
+}
+
+/* Connector column */
+.connector-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-width: 24px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.connector {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.connector::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 12px;
+  border-top: 1px solid rgba(200,168,75,0.3);
+  border-right: 1px solid rgba(200,168,75,0.3);
+  border-bottom: 1px solid rgba(200,168,75,0.3);
+  border-radius: 0 4px 4px 0;
+}
+
+.connector.left::before {
+  right: auto;
+  left: 0;
+  border-radius: 4px 0 0 4px;
+  border-top: 1px solid rgba(200,168,75,0.3);
+  border-left: 1px solid rgba(200,168,75,0.3);
+  border-bottom: 1px solid rgba(200,168,75,0.3);
+  border-right: none;
+}
+
+/* Match card */
+.match {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.match-header {
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #666;
+  text-align: right;
+  border-bottom: 1px solid #eee;
+}
+
+.match-title {
+  padding: 6px 10px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+}
+
+.match-subtitle {
+  padding: 0 10px 6px;
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  padding: 7px 10px;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.team:last-child { border-bottom: none; }
+
+.team-flag {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.team-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #222;
+  flex: 1;
+}
+.team-name.tbd {
+  color: #aaa;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.team-score {
+  font-size: 13px;
+  font-weight: 700;
+  color: #222;
+  min-width: 16px;
+  text-align: right;
+}
+
+.match-footer {
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #888;
+  display: flex;
+  justify-content: space-between;
+  background: #f8f8f8;
+}
+
+/* Special cards */
+.match.final-card {
+  border: 2px solid #c8a84b;
+}
+.match.final-card .match-title { color: #c8a84b; }
+
+.match.third-card {
+  border: 1px solid #ccc;
+  opacity: 0.9;
+}
+
+/* Simple list layout for R32 and R16 */
+.matches-list {
+  display: grid;
+  gap: 10px;
+}
+.matches-list.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.matches-list.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 600px) {
+  .matches-list.cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .matches-list.cols-2 { grid-template-columns: 1fr; }
+}
+
+.round-note {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  padding: 12px 0 0;
+  line-height: 1.8;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="series">2026 FIFA 世界盃</div>
+  <h1>淘汰賽對陣圖</h1>
+</div>
+
+<!-- Tab navigation -->
+<div class="tabs">
+  <div class="tab active" onclick="showRound('r32')">32強</div>
+  <div class="tab" onclick="showRound('r16')">16強</div>
+  <div class="tab" onclick="showRound('qf')">準四強（8強）</div>
+  <div class="tab" onclick="showRound('sf')">準決賽</div>
+  <div class="tab" onclick="showRound('final')">季軍賽與決賽</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     32強
+     更新方式：把「待定」改成實際球隊名稱
+     旗幟：把 🏳️ 改成對應國旗 emoji
+     ══════════════════════════════════════════════ -->
+<div class="round-panel active" id="r32">
+  <div class="matches-list cols-4" id="r32-matches"></div>
+  <div class="round-note">※ 各組第三名最佳8支球隊的對手將於6/27小組賽結束後確定</div>
+</div>
+
+<!-- 16強 -->
+<div class="round-panel" id="r16">
+  <div class="matches-list cols-4" id="r16-matches"></div>
+</div>
+
+<!-- 8強 -->
+<div class="round-panel" id="qf">
+  <div class="bracket-layout" id="qf-bracket"></div>
+</div>
+
+<!-- 準決賽 -->
+<div class="round-panel" id="sf">
+  <div class="bracket-layout" id="sf-bracket"></div>
+</div>
+
+<!-- 季軍賽與決賽 -->
+<div class="round-panel" id="final">
+  <div class="matches-list cols-2" id="final-matches"></div>
+</div>
+
+<script>
+// ============================================================
+//  ★ 編輯區 ★
+//  比賽結果出來後，把「待定」改成實際球隊名稱
+//  旗幟用 emoji，找不到可以用 🏳️ 代替
+//  score: 填入比分，例如 "2"，未踢填 ""
+// ============================================================
+
+const data = {
+
+  // ── 32強 ────────────────────────────────────────────────
+  r32: [
+    { id:"M73",  date:"6/30", venue:"達拉斯",    a:{f:"🇫🇷", n:"法國",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M74",  date:"6/29", venue:"波士頓",    a:{f:"🇳🇴", n:"挪威",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M75",  date:"7/3",  venue:"達拉斯",    a:{f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", n:"英格蘭",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M76",  date:"7/1",  venue:"亞特蘭大",  a:{f:"🇪🇸", n:"西班牙",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M77",  date:"6/30", venue:"紐約",      a:{f:"🇺🇸", n:"美國",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M78",  date:"7/3",  venue:"邁阿密",    a:{f:"🇵🇹", n:"葡萄牙",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M79",  date:"7/4",  venue:"費城",      a:{f:"🇧🇷", n:"巴西",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M80",  date:"7/4",  venue:"休士頓",    a:{f:"🇩🇪", n:"德國",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M81",  date:"6/28", venue:"舊金山",    a:{f:"🇦🇷", n:"阿根廷",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M82",  date:"7/1",  venue:"西雅圖",    a:{f:"🇯🇵", n:"日本",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M83",  date:"6/28", venue:"洛杉磯",    a:{f:"🇰🇷", n:"南韓",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M84",  date:"7/2",  venue:"洛杉磯",    a:{f:"🇳🇱", n:"荷蘭",    s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M85",  date:"6/30", venue:"達拉斯",    a:{f:"🇲🇦", n:"摩洛哥",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M86",  date:"6/29", venue:"休士頓",    a:{f:"🇨🇴", n:"哥倫比亞",s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M87",  date:"7/3",  venue:"達拉斯",    a:{f:"🇲🇽", n:"墨西哥",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M88",  date:"7/3",  venue:"墨西哥城",  a:{f:"🇨🇦", n:"加拿大",  s:""}, b:{f:"🏳️", n:"待定", s:""} },
+  ],
+
+  // ── 16強 ────────────────────────────────────────────────
+  r16: [
+    { id:"M89",  date:"7/5",  venue:"紐約",      a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M90",  date:"7/6",  venue:"西雅圖",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M91",  date:"7/6",  venue:"溫哥華",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M92",  date:"7/7",  venue:"亞特蘭大",  a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M93",  date:"7/5",  venue:"舊金山",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M94",  date:"7/6",  venue:"休士頓",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M95",  date:"7/7",  venue:"洛杉磯",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M96",  date:"7/5",  venue:"墨西哥城",  a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+  ],
+
+  // ── 8強 ─────────────────────────────────────────────────
+  qf: [
+    { id:"M97",  date:"7/9",  venue:"波士頓",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M98",  date:"7/11", venue:"堪薩斯城",  a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M99",  date:"7/10", venue:"洛杉磯",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M100", date:"7/11", venue:"邁阿密",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+  ],
+
+  // ── 準決賽 ───────────────────────────────────────────────
+  sf: [
+    { id:"M101", date:"7/14", venue:"達拉斯",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M102", date:"7/15", venue:"亞特蘭大",  a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+  ],
+
+  // ── 季軍賽與決賽 ─────────────────────────────────────────
+  final: [
+    { id:"M103", date:"7/18", venue:"邁阿密 · 硬石球場",         title:"🥉 季軍賽",   a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+    { id:"M104", date:"7/19", venue:"紐約/新澤西 · 大都會人壽球場", title:"🏆 決賽",    a:{f:"🏳️", n:"待定", s:""}, b:{f:"🏳️", n:"待定", s:""} },
+  ],
+};
+
+// ── 渲染函數 ─────────────────────────────────────────────
+
+function matchCard(m, special) {
+  const aTbd = m.a.n === "待定";
+  const bTbd = m.b.n === "待定";
+  const cls = special === 'final' ? 'match final-card' : special === 'third' ? 'match third-card' : 'match';
+  return `
+    <div class="${cls}">
+      ${m.title ? `<div class="match-title">${m.title}</div><div class="match-subtitle">${m.venue}</div>` : `<div class="match-header">${m.id} · ${m.venue}</div>`}
+      <div class="team">
+        <div class="team-flag">${m.a.f}</div>
+        <div class="team-name${aTbd?' tbd':''}">${m.a.n}</div>
+        <div class="team-score">${m.a.s}</div>
+      </div>
+      <div class="team">
+        <div class="team-flag">${m.b.f}</div>
+        <div class="team-name${bTbd?' tbd':''}">${m.b.n}</div>
+        <div class="team-score">${m.b.s}</div>
+      </div>
+      <div class="match-footer">
+        <span>${m.date}</span>
+        <span>FOX/Tele</span>
+      </div>
+    </div>`;
+}
+
+// 32強
+const r32El = document.getElementById('r32-matches');
+data.r32.forEach(m => { r32El.innerHTML += matchCard(m); });
+
+// 16強
+const r16El = document.getElementById('r16-matches');
+data.r16.forEach(m => { r16El.innerHTML += matchCard(m); });
+
+// 8強 — 左右對稱樹狀
+const qfEl = document.getElementById('qf-bracket');
+qfEl.innerHTML = `
+  <div class="bracket-col">
+    ${matchCard(data.qf[0])}
+    ${matchCard(data.qf[1])}
+  </div>
+  <div class="connector-col">
+    <div class="connector"></div>
+    <div class="connector"></div>
+  </div>
+  <div class="bracket-col center-col">
+    <div style="margin-top:auto;margin-bottom:auto;">
+      ${matchCard(data.sf[0])}
+    </div>
+  </div>
+  <div class="connector-col">
+    <div class="connector left"></div>
+    <div class="connector left"></div>
+  </div>
+  <div class="bracket-col">
+    ${matchCard(data.qf[2])}
+    ${matchCard(data.qf[3])}
+  </div>
+`;
+
+// 準決賽 — 左右對稱
+const sfEl = document.getElementById('sf-bracket');
+sfEl.innerHTML = `
+  <div class="bracket-col">
+    ${matchCard(data.sf[0])}
+  </div>
+  <div class="connector-col">
+    <div class="connector"></div>
+  </div>
+  <div class="bracket-col center-col">
+    ${matchCard(data.final[1], 'final')}
+  </div>
+  <div class="connector-col">
+    <div class="connector left"></div>
+  </div>
+  <div class="bracket-col">
+    ${matchCard(data.sf[1])}
+  </div>
+`;
+
+// 季軍賽與決賽
+const finalEl = document.getElementById('final-matches');
+finalEl.innerHTML = matchCard(data.final[1], 'final') + matchCard(data.final[0], 'third');
+
+// ── 分頁切換 ─────────────────────────────────────────────
+function showRound(id) {
+  document.querySelectorAll('.round-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
