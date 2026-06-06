@@ -81,7 +81,7 @@
 
 <script>
 const SHEET_ID = "1k_WZ9R5MS3xxb-SFezMCflNUGkbLKY3Y5BcezQhiJ0c";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1&t=${Date.now()}`;
 
 async function fetchData() {
   const res = await fetch(SHEET_URL);
