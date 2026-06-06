@@ -81,17 +81,18 @@
 
 <script>
 const SHEET_ID = "1k_WZ9R5MS3xxb-SFezMCflNUGkbLKY3Y5BcezQhiJ0c";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
 
 async function fetchData() {
   const res = await fetch(SHEET_URL);
   const text = await res.text();
-  const rows = text.trim().split("\n").slice(1);
+  // gviz回傳格式是 /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+  const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
+  const rows = json.table.rows;
   const players = [];
   for (const row of rows) {
-    const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
-    const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [name, goals] = clean;
+    const name = row.c[0]?.v;
+    const goals = row.c[1]?.v || 0;
     if (!name || name === "球員") continue;
     players.push({ name, goals: parseInt(goals) || 0 });
   }
@@ -99,13 +100,22 @@ async function fetchData() {
 }
 
 function render(players) {
-  const rows = players.map((p, i) => {
-    const rank = i + 1;
-    const hasStarted = players.some(p => p.goals > 0);
-    const rankClass = (hasStarted && rank === 1) ? "rank-1" : (hasStarted && rank === 2) ? "rank-2" : (hasStarted && rank === 3) ? "rank-3" : "rank-other";
-    const rankIcon = (hasStarted && rank === 1) ? "🥇" : (hasStarted && rank === 2) ? "🥈" : (hasStarted && rank === 3) ? "🥉" : rank;
-    const goalsClass = (hasStarted && rank === 1) ? "goals-1" : (hasStarted && rank === 2) ? "goals-2" : (hasStarted && rank === 3) ? "goals-3" : "goals-other";
-    const playerClass = (hasStarted && rank === 1) ? "player-name-1" : "";
+  const hasStarted = players.some(p => p.goals > 0);
+
+  // ── 標準競賽排名：同分同名，下一名跳過 ──
+  let rank = 1;
+  const ranked = players.map((p, i) => {
+    if (i > 0 && p.goals < players[i - 1].goals) {
+      rank = i + 1; // 跳到實際位置
+    }
+    return { ...p, rank };
+  });
+
+  const rows = ranked.map(p => {
+    const rankClass = (hasStarted && p.rank === 1) ? "rank-1" : (hasStarted && p.rank === 2) ? "rank-2" : (hasStarted && p.rank === 3) ? "rank-3" : "rank-other";
+    const rankIcon = (hasStarted && p.rank === 1) ? "🥇" : (hasStarted && p.rank === 2) ? "🥈" : (hasStarted && p.rank === 3) ? "🥉" : p.rank;
+    const goalsClass = (hasStarted && p.rank === 1) ? "goals-1" : (hasStarted && p.rank === 2) ? "goals-2" : (hasStarted && p.rank === 3) ? "goals-3" : "goals-other";
+    const playerClass = (hasStarted && p.rank === 1) ? "player-name-1" : "";
     return `<tr>
       <td class="col-rank"><span class="${rankClass}">${rankIcon}</span></td>
       <td class="col-player"><span class="${playerClass}">${p.name}</span></td>
