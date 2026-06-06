@@ -85,27 +85,24 @@
     <div class="legend-item"><div class="legend-dot legend-e"></div>出局</div>
   </div>
   <div class="wc-footer">
-    <span id="footerNote">數據來源：編輯團隊</span>
+    <span id="footerNote">數據來源：FIFA</span>
   </div>
 </div>
 
 <script>
-// ══ 設定：你的 Google 試算表 ID ══
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
 let GROUPS = {};
 let activeGroup = "A";
 
-// ══ 抓取試算表數據 ══
 async function fetchData() {
-  const res = await fetch(SHEET_URL);
+  const res = await fetch(SHEET_URL());
   const text = await res.text();
-  const rows = text.trim().split("\n").slice(1); // 跳過標題行
+  const rows = text.trim().split("\n").slice(1);
 
   GROUPS = {};
   for (const row of rows) {
-    // 處理 CSV，支援逗號在引號內
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
     const [grp, name, flag, w, l, d, gf, ga] = clean;
@@ -119,7 +116,6 @@ async function fetchData() {
   }
 }
 
-// ══ 排序 ══
 function sortTeams(teams) {
   return [...teams].sort((a, b) => {
     const ptsA = a[2]*3+a[4], ptsB = b[2]*3+b[4];
@@ -130,7 +126,6 @@ function sortTeams(teams) {
   });
 }
 
-// ══ 渲染 ══
 function renderGroup(groupKey) {
   const teams = sortTeams(GROUPS[groupKey] || []);
   const hasPlayed = teams.some(t => t[2]+t[3]+t[4] > 0);
@@ -184,7 +179,6 @@ function switchGroup(g) {
   renderGroup(g);
 }
 
-// ══ 初始化 ══
 async function init() {
   try {
     await fetchData();
