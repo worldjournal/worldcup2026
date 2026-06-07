@@ -7,10 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Noto Sans TC',sans-serif; background:#f4f4f4; color:#222; }
-.page-header { background:#fff; border-bottom:2px solid #c8a84b; padding:16px 20px 12px; }
-.page-header .series { font-size:11px; letter-spacing:2px; color:#c8a84b; margin-bottom:4px; }
-.page-header h1 { font-size:18px; font-weight:700; }
+body { font-family:'Noto Sans TC',sans-serif; background:#f8f7f3; color:#222; }
+.page-header { background:#1a1a2e; color:#fff; padding:14px 18px 12px; display:flex; align-items:center; justify-content:space-between; }
+.page-header-left { display:flex; align-items:center; gap:10px; }
+.page-header-icon { font-size:22px; filter:drop-shadow(0 0 6px rgba(212,175,55,.6)); }
+.page-header-title { font-family:'Noto Serif TC',serif; font-size:15px; font-weight:700; letter-spacing:.04em; }
+.page-header-sub { font-size:10px; color:rgba(255,255,255,.5); letter-spacing:.06em; margin-top:2px; }
+.page-footer { padding:8px 14px; background:#f5f5f0; border-top:1px solid #e0ddd5; display:flex; justify-content:space-between; align-items:center; }
+.page-footer span { font-size:10px; color:#888; }
 .tabs { display:flex; gap:4px; padding:12px 20px; background:#fff; border-bottom:1px solid #ddd; overflow-x:auto; scrollbar-width:none; }
 .tabs::-webkit-scrollbar { display:none; }
 .tab { padding:7px 14px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; background:#eee; border:1px solid #ddd; color:#555; }
@@ -35,8 +39,13 @@ body { font-family:'Noto Sans TC',sans-serif; background:#f4f4f4; color:#222; }
 </head>
 <body>
 <div class="page-header">
-  <div class="series">2026 FIFA 世界盃</div>
-  <h1>淘汰賽對陣圖</h1>
+  <div class="page-header-left">
+    <span class="page-header-icon">🏆</span>
+    <div>
+      <div class="page-header-title">2026 FIFA 世界盃 — 淘汰賽對陣圖</div>
+      <div class="page-header-sub">FIFA World Cup · USA / CAN / MEX</div>
+    </div>
+  </div>
 </div>
 <div class="tabs">
   <div class="tab active" onclick="show('r32',this)">32強</div>
@@ -55,7 +64,8 @@ body { font-family:'Noto Sans TC',sans-serif; background:#f4f4f4; color:#222; }
 <script>
 // ============================================================
 // ★ 編輯區：小組賽結束後把組別說明改成實際球隊名稱
-// f: 國旗emoji，s: 比分（未踢填""）
+// 填入正確球隊名稱後，國旗會自動顯示（不需要填 f: 欄位）
+// s: 比分（未踢填""）
 // ============================================================
 const M = {
   // ── 32強 (6/28–7/3) ──────────────────────────────────────
@@ -129,6 +139,27 @@ const M = {
     a:{f:"🏳️",n:"準決賽勝者",s:""},b:{f:"🏳️",n:"準決賽勝者",s:""}},
 };
 
+// ── 國旗圖片 ────────────────────────────────────────────────
+const FLAG_CODES = {
+  "捷克":"CZ","南韓":"KR","墨西哥":"MX","南非":"ZA",
+  "波赫":"BA","加拿大":"CA","卡達":"QA","瑞士":"CH",
+  "巴西":"BR","海地":"HT","摩洛哥":"MA","蘇格蘭":"GB-SCT",
+  "澳洲":"AU","巴拉圭":"PY","土耳其":"TR","美國":"US",
+  "庫拉索":"CW","古拉索":"CW","厄瓜多":"EC","德國":"DE","象牙海岸":"CI",
+  "日本":"JP","荷蘭":"NL","瑞典":"SE","突尼西亞":"TN",
+  "比利時":"BE","埃及":"EG","伊朗":"IR","紐西蘭":"NZ",
+  "維德角":"CV","佛得角":"CV","沙烏地阿拉伯":"SA","西班牙":"ES","烏拉圭":"UY",
+  "法國":"FR","伊拉克":"IQ","挪威":"NO","塞內加爾":"SN",
+  "阿爾及利亞":"DZ","阿根廷":"AR","奧地利":"AT","約旦":"JO",
+  "哥倫比亞":"CO","剛果民主共和國":"CD","葡萄牙":"PT","烏茲別克":"UZ",
+  "巴拿馬":"PA","克羅埃西亞":"HR","加納":"GH","英格蘭":"GB-ENG",
+};
+function flagImg(name) {
+  const code = FLAG_CODES[name];
+  if (!code) return `<span style="font-size:12px;color:#ccc;">🏳</span>`;
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
+}
+
 function card(m, type) {
   const isFinal = type==='final', isThird = type==='third';
   const cls = isFinal?'match final-card':isThird?'match third-card':'match';
@@ -141,8 +172,8 @@ function card(m, type) {
   const sb = m.b.s !== "" ? m.b.s : "–";
   return `<div class="${cls}">
     ${titleHtml}
-    <div class="team"><div class="flag">${m.a.f}</div><div class="tname${at?" tbd":""}">${m.a.n}</div><div class="tscore">${sa}</div></div>
-    <div class="team"><div class="flag">${m.b.f}</div><div class="tname${bt?" tbd":""}">${m.b.n}</div><div class="tscore">${sb}</div></div>
+    <div class="team"><div class="flag">${flagImg(m.a.n)}</div><div class="tname${at?" tbd":""}">${m.a.n}</div><div class="tscore">${sa}</div></div>
+    <div class="team"><div class="flag">${flagImg(m.b.n)}</div><div class="tname${bt?" tbd":""}">${m.b.n}</div><div class="tscore">${sb}</div></div>
     <div class="match-foot"><span>${m.date} · ${m.time}</span><span>${isFinal||isThird?'':m.venue}</span></div>
   </div>`;
 }
@@ -194,7 +225,7 @@ function buildBracket(containerId, rounds) {
       <div style="display:flex;margin-bottom:8px;">${labelsHtml}</div>
       ${bodyHtml}
     </div>
-    ${containerId==='r32'?'<p style="font-size:10px;color:#aaa;margin-top:12px;">※ 小組賽結束後填入實際球隊名稱｜所有時間為美東時間（ET）</p>':''}
+    ${containerId==='r32'?'<p style="font-size:10px;color:#aaa;margin-top:12px;">※ 所有時間為美東時間（ET）</p>':''}
   `;
 }
 
@@ -243,6 +274,10 @@ function show(id,el){
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
 }
-</script>
+</script><div class="page-footer">
+  <span>數據來源：FIFA</span>
+  <span>所有時間為美東時間（ET）</span>
+</div>
+
 </body>
 </html>
