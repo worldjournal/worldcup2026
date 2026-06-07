@@ -97,7 +97,7 @@ const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz
 const FLAG_CODES = {
   "捷克":"cz","南韓":"kr","墨西哥":"mx","南非":"za",
   "波赫":"ba","加拿大":"ca","卡達":"qa","瑞士":"ch",
-  "巴西":"br","海地":"ht","摩洛哥":"ma","蘇格蘭":"gb-sct",
+  "巴西":"br","海地":"ht","摩洛哥":"ma","蘇格蘭":"GB-SCT",
   "澳洲":"au","巴拉圭":"py","土耳其":"tr","美國":"us",
   "庫拉索":"cw","古拉索":"cw","厄瓜多":"ec","德國":"de","象牙海岸":"ci",
   "日本":"jp","荷蘭":"nl","瑞典":"se","突尼西亞":"tn",
@@ -106,13 +106,13 @@ const FLAG_CODES = {
   "法國":"fr","伊拉克":"iq","挪威":"no","塞內加爾":"sn",
   "阿爾及利亞":"dz","阿根廷":"ar","奧地利":"at","約旦":"jo",
   "哥倫比亞":"co","剛果民主共和國":"cd","葡萄牙":"pt","烏茲別克":"uz",
-  "巴拿馬":"pa","克羅埃西亞":"hr","加納":"gh","英格蘭":"gb-eng",
+  "巴拿馬":"pa","克羅埃西亞":"hr","加納":"gh","英格蘭":"GB-ENG",
 };
 
 function getFlagImg(name) {
   const code = FLAG_CODES[name];
   if (!code) return "";
-  return `<img src="https://flagcdn.com/20x15/${code}.png" width="20" height="15" alt="${name}" style="border-radius:2px;vertical-align:middle;">`;
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code.toUpperCase()}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
 }
 let GROUPS = {};
 let activeGroup = "A";
