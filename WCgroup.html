@@ -93,25 +93,27 @@
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
 const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
-// ══ 國旗對照表（48支球隊）══
-function flag(a, b) {
-  return String.fromCodePoint(0x1F1E0 + a.charCodeAt(0) - 65, 0x1F1E0 + b.charCodeAt(0) - 65);
-}
-const FLAGS = {
-  "捷克":flag("C","Z"),"南韓":flag("K","R"),"墨西哥":flag("M","X"),"南非":flag("Z","A"),
-  "波赫":flag("B","A"),"加拿大":flag("C","A"),"卡達":flag("Q","A"),"瑞士":flag("C","H"),
-  "巴西":flag("B","R"),"海地":flag("H","T"),"摩洛哥":flag("M","A"),
-  "澳洲":flag("A","U"),"巴拉圭":flag("P","Y"),"土耳其":flag("T","R"),"美國":flag("U","S"),
-  "庫拉索":flag("C","W"),"古拉索":flag("C","W"),"厄瓜多":flag("E","C"),"德國":flag("D","E"),"象牙海岸":flag("C","I"),
-  "日本":flag("J","P"),"荷蘭":flag("N","L"),"瑞典":flag("S","E"),"突尼西亞":flag("T","N"),
-  "比利時":flag("B","E"),"埃及":flag("E","G"),"伊朗":flag("I","R"),"紐西蘭":flag("N","Z"),
-  "維德角":flag("C","V"),"佛得角":flag("C","V"),"沙烏地阿拉伯":flag("S","A"),"西班牙":flag("E","S"),"烏拉圭":flag("U","Y"),
-  "法國":flag("F","R"),"伊拉克":flag("I","Q"),"挪威":flag("N","O"),"塞內加爾":flag("S","N"),
-  "阿爾及利亞":flag("D","Z"),"阿根廷":flag("A","R"),"奧地利":flag("A","T"),"約旦":flag("J","O"),
-  "哥倫比亞":flag("C","O"),"剛果民主共和國":flag("C","D"),"葡萄牙":flag("P","T"),"烏茲別克":flag("U","Z"),
-  "巴拿馬":flag("P","A"),"克羅埃西亞":flag("H","R"),"加納":flag("G","H"),
-  "蘇格蘭":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","英格蘭":"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+// ══ 國旗代碼對照表（ISO 3166-1 alpha-2）══
+const FLAG_CODES = {
+  "捷克":"cz","南韓":"kr","墨西哥":"mx","南非":"za",
+  "波赫":"ba","加拿大":"ca","卡達":"qa","瑞士":"ch",
+  "巴西":"br","海地":"ht","摩洛哥":"ma","蘇格蘭":"gb-sct",
+  "澳洲":"au","巴拉圭":"py","土耳其":"tr","美國":"us",
+  "庫拉索":"cw","古拉索":"cw","厄瓜多":"ec","德國":"de","象牙海岸":"ci",
+  "日本":"jp","荷蘭":"nl","瑞典":"se","突尼西亞":"tn",
+  "比利時":"be","埃及":"eg","伊朗":"ir","紐西蘭":"nz",
+  "維德角":"cv","佛得角":"cv","沙烏地阿拉伯":"sa","西班牙":"es","烏拉圭":"uy",
+  "法國":"fr","伊拉克":"iq","挪威":"no","塞內加爾":"sn",
+  "阿爾及利亞":"dz","阿根廷":"ar","奧地利":"at","約旦":"jo",
+  "哥倫比亞":"co","剛果民主共和國":"cd","葡萄牙":"pt","烏茲別克":"uz",
+  "巴拿馬":"pa","克羅埃西亞":"hr","加納":"gh","英格蘭":"gb-eng",
 };
+
+function getFlagImg(name) {
+  const code = FLAG_CODES[name];
+  if (!code) return "";
+  return `<img src="https://flagcdn.com/20x15/${code}.png" width="20" height="15" alt="${name}" style="border-radius:2px;vertical-align:middle;">`;
+}
 let GROUPS = {};
 let activeGroup = "A";
 
@@ -128,7 +130,7 @@ async function fetchData() {
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     GROUPS[grp].push([
-      name, FLAGS[name] || "🏳️",
+      name, getFlagImg(name),
       parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
       parseInt(gf)||0, parseInt(ga)||0
     ]);
