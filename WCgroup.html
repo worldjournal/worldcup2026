@@ -93,6 +93,23 @@
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
 const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
+// ══ 國旗對照表（48支球隊）══
+const FLAGS = {
+  "捷克":"🇨🇿","南韓":"🇰🇷","墨西哥":"🇲🇽","南非":"🇿🇦",
+  "波赫":"🇧🇦","加拿大":"🇨🇦","卡達":"🇶🇦","瑞士":"🇨🇭",
+  "巴西":"🇧🇷","海地":"🇭🇹","摩洛哥":"🇲🇦","蘇格蘭":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "澳洲":"🇦🇺","巴拉圭":"🇵🇾","土耳其":"🇹🇷","美國":"🇺🇸",
+  "庫拉索":"🇨🇼","厄瓜多":"🇪🇨","德國":"🇩🇪","象牙海岸":"🇨🇮",
+  "日本":"🇯🇵","荷蘭":"🇳🇱","瑞典":"🇸🇪","突尼西亞":"🇹🇳",
+  "比利時":"🇧🇪","埃及":"🇪🇬","伊朗":"🇮🇷","紐西蘭":"🇳🇿",
+  "維德角":"🇨🇻","佛得角":"🇨🇻","沙烏地阿拉伯":"🇸🇦","西班牙":"🇪🇸","烏拉圭":"🇺🇾",
+  "法國":"🇫🇷","伊拉克":"🇮🇶","挪威":"🇳🇴","塞內加爾":"🇸🇳",
+  "阿爾及利亞":"🇩🇿","阿根廷":"🇦🇷","奧地利":"🇦🇹","約旦":"🇯🇴",
+  "哥倫比亞":"🇨🇴","剛果民主共和國":"🇨🇩","葡萄牙":"🇵🇹","烏茲別克":"🇺🇿",
+  "巴拿馬":"🇵🇦","克羅埃西亞":"🇭🇷","英格蘭":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","加納":"🇬🇭",
+  "古拉索":"🇨🇼",
+};
+
 let GROUPS = {};
 let activeGroup = "A";
 
@@ -105,11 +122,11 @@ async function fetchData() {
   for (const row of rows) {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [grp, name, flag, w, l, d, gf, ga] = clean;
+    const [grp, name, , w, l, d, gf, ga] = clean;
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     GROUPS[grp].push([
-      name, flag,
+      name, FLAGS[name] || "🏳️",
       parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
       parseInt(gf)||0, parseInt(ga)||0
     ]);
