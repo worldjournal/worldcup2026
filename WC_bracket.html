@@ -291,4 +291,25 @@ buildBracket('sf',[
 
 // 決賽分頁：決賽在上，季軍賽在下，仿ESPN樣式
 document.getElementById('final').innerHTML=`
- 
+  <div style="max-width:420px;">
+    ${card(M.M104,'final')}
+    <div style="margin-top:16px;">
+      ${card(M.M103,'third')}
+    </div>
+  </div>
+  <p style="font-size:10px;color:#aaa;margin-top:12px;">※ 所有時間為美東時間（ET）</p>
+`;
+
+function show(id,el){
+  document.querySelectorAll('.round-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+</script><div class="page-footer">
+  <span>數據來源：FIFA</span>
+  <span>所有時間為美東時間（ET）</span>
+</div>
+
+</body>
+</html>
