@@ -3,215 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026世界盃小組戰績表</title>
+<title>2026世界盃金靴獎排行</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --red: #C8102E; --dark: #1a1a2e; --mid: #2d2d44; --gold: #D4AF37;
+    --silver: #A8A9AD; --bronze: #CD7F32;
     --light: #f5f5f0; --border: #e0ddd5; --text: #1a1a1a; --muted: #888;
-    --qualify: #1a6b3c; --third: #1a4f8c;
   }
   body { font-family: 'Noto Sans TC', sans-serif; background: #f8f7f3; color: var(--text); padding: 16px; }
 
-  .wc-widget { max-width: 720px; background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
-  .wc-header { background: var(--dark); color: #fff; padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; }
-  .wc-header-left { display: flex; align-items: center; gap: 10px; }
-  .wc-trophy { font-size: 22px; filter: drop-shadow(0 0 6px rgba(212,175,55,.6)); }
-  .wc-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; letter-spacing: .04em; }
-  .wc-subtitle { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .06em; margin-top: 2px; }
-  .wc-updated { font-size: 10px; color: rgba(255,255,255,.45); text-align: right; }
+  .gb-widget { max-width: 720px; background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
 
-  .wc-tabs { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--mid); border-bottom: 2px solid var(--red); }
-  .wc-tabs::-webkit-scrollbar { display: none; }
-  .wc-tab { flex: 0 0 auto; padding: 8px 14px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.55); cursor: pointer; letter-spacing: .06em; border: none; background: none; transition: color .2s; white-space: nowrap; font-family: inherit; }
-  .wc-tab:hover { color: #fff; }
-  .wc-tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); margin-bottom: -2px; }
+  .gb-header { background: var(--dark); color: #fff; padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; }
+  .gb-header-left { display: flex; align-items: center; gap: 10px; }
+  .gb-boot { font-size: 22px; filter: drop-shadow(0 0 6px rgba(212,175,55,.6)); }
+  .gb-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; letter-spacing: .04em; }
+  .gb-subtitle { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .06em; margin-top: 2px; }
+  .gb-updated { font-size: 10px; color: rgba(255,255,255,.45); text-align: right; }
 
-  .wc-state { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .wc-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin .8s linear infinite; }
+  .gb-state { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .gb-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .wc-table-wrap { overflow-x: auto; }
+  .gb-table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { background: var(--light); font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-align: center; padding: 7px 6px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  thead th.col-team { text-align: left; padding-left: 12px; }
+  thead th { background: var(--light); font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-align: center; padding: 7px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  thead th.col-player { text-align: left; }
   tbody tr { border-bottom: 1px solid #f0ede8; transition: background .15s; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #fdfcf8; }
-  td { padding: 9px 6px; text-align: center; vertical-align: middle; }
-  td.col-rank { font-size: 11px; font-weight: 700; color: var(--muted); width: 28px; padding-left: 10px; }
-  td.col-team { text-align: left; padding-left: 0; min-width: 140px; }
-  .team-cell { display: flex; align-items: center; gap: 8px; }
-  .team-flag { font-size: 18px; }
-  .team-name { font-weight: 500; font-size: 13px; }
-  td.col-pts { font-weight: 700; font-size: 14px; }
-  td.col-gd { font-size: 12px; color: var(--muted); }
-  .pts-high { color: var(--qualify); }
-  .pts-mid { color: var(--third); }
-  .status-bar { width: 4px; height: 32px; border-radius: 2px; flex-shrink: 0; }
-  .status-q { background: var(--qualify); }
-  .status-t { background: var(--third); }
-  .status-e { background: #ddd; }
+  td { padding: 10px 12px; text-align: center; vertical-align: middle; }
 
-  .wc-legend { display: flex; gap: 16px; padding: 10px 14px; background: var(--light); border-top: 1px solid var(--border); flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-  .legend-q { background: var(--qualify); }
-  .legend-t { background: var(--third); }
-  .legend-e { background: #ddd; }
+  td.col-rank { width: 40px; font-size: 13px; font-weight: 700; }
+  .rank-1 { color: var(--gold); font-size: 18px; }
+  .rank-2 { color: var(--silver); font-size: 16px; }
+  .rank-3 { color: var(--bronze); font-size: 15px; }
+  .rank-other { color: var(--muted); }
 
-  .wc-footer { padding: 8px 14px; background: #f8f7f3; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .wc-footer span { font-size: 10px; color: var(--muted); }
+  td.col-player { text-align: left; font-weight: 500; font-size: 14px; }
+  .player-name-1 { font-size: 15px; font-weight: 700; }
+
+  td.col-goals { font-size: 20px; font-weight: 700; }
+  .goals-1 { color: var(--gold); font-size: 24px; }
+  .goals-2 { color: var(--silver); font-size: 22px; }
+  .goals-3 { color: var(--bronze); font-size: 20px; }
+  .goals-other { color: var(--text); }
+
+  .gb-footer { padding: 8px 14px; background: var(--light); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .gb-footer span { font-size: 10px; color: var(--muted); }
+  .gb-note { padding: 8px 14px; background: #fffbe8; border-top: 1px solid #f0e8b0; font-size: 11px; color: #7a6a00; }
 </style>
 </head>
 <body>
-<div class="wc-widget">
-  <div class="wc-header">
-    <div class="wc-header-left">
-      <span class="wc-trophy">🏆</span>
+<div class="gb-widget">
+  <div class="gb-header">
+    <div class="gb-header-left">
+      <span class="gb-boot">👟</span>
       <div>
-        <div class="wc-title">2026 FIFA 世界盃 — 小組賽戰績</div>
-        <div class="wc-subtitle">FIFA World Cup · USA / CAN / MEX</div>
+        <div class="gb-title">2026 FIFA 世界盃 — 金靴獎排行</div>
+        <div class="gb-subtitle">Golden Boot · 進球數排行</div>
       </div>
     </div>
-    <div class="wc-updated" id="lastUpdated">載入中…</div>
+    <div class="gb-updated" id="lastUpdated">載入中…</div>
   </div>
-  <div class="wc-tabs" id="tabsContainer"></div>
-  <div id="contentArea"><div class="wc-state"><div class="wc-spinner"></div><span>資料載入中…</span></div></div>
-  <div class="wc-legend">
-    <div class="legend-item"><div class="legend-dot legend-q"></div>直接晉級淘汰賽</div>
-    <div class="legend-item"><div class="legend-dot legend-t"></div>最佳第三名（待定）</div>
-    <div class="legend-item"><div class="legend-dot legend-e"></div>出局</div>
+
+  <div id="contentArea">
+    <div class="gb-state"><div class="gb-spinner"></div><span>資料載入中…</span></div>
   </div>
-  <div class="wc-footer">
-    <span id="footerNote">資料來源：FIFA</span>
+
+  <div class="gb-note">⚽ 金靴獎以進球數決定，同球數者以助攻數、上場分鐘數依序比較。</div>
+  <div class="gb-footer">
+    <span>資料來源：FIFA</span>
+    <span id="footerNote"></span>
   </div>
 </div>
 
 <script>
-const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
-const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
-
-// ══ 國旗代碼對照表（ISO 3166-1 alpha-2）══
-const FLAG_CODES = {
-  "捷克":"cz","南韓":"kr","墨西哥":"mx","南非":"za",
-  "波赫":"ba","加拿大":"ca","卡達":"qa","瑞士":"ch",
-  "巴西":"br","海地":"ht","摩洛哥":"ma","蘇格蘭":"GB-SCT",
-  "澳洲":"au","巴拉圭":"py","土耳其":"tr","美國":"us",
-  "庫拉索":"cw","古拉索":"cw","厄瓜多":"ec","德國":"de","象牙海岸":"ci",
-  "日本":"jp","荷蘭":"nl","瑞典":"se","突尼西亞":"tn",
-  "比利時":"be","埃及":"eg","伊朗":"ir","紐西蘭":"nz",
-  "維德角":"cv","佛得角":"cv","沙烏地阿拉伯":"sa","西班牙":"es","烏拉圭":"uy",
-  "法國":"fr","伊拉克":"iq","挪威":"no","塞內加爾":"sn",
-  "阿爾及利亞":"dz","阿根廷":"ar","奧地利":"at","約旦":"jo",
-  "哥倫比亞":"co","剛果民主共和國":"cd","葡萄牙":"pt","烏茲別克":"uz",
-  "巴拿馬":"pa","克羅埃西亞":"hr","加納":"gh","英格蘭":"GB-ENG",
-};
-
-function getFlagImg(name) {
-  const code = FLAG_CODES[name];
-  if (!code) return "";
-  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code.toUpperCase()}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
-}
-let GROUPS = {};
-let activeGroup = "A";
+const SHEET_ID = "1k_WZ9R5MS3xxb-SFezMCflNUGkbLKY3Y5BcezQhiJ0c";
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1&t=${Date.now()}`;
 
 async function fetchData() {
-  const res = await fetch(SHEET_URL());
+  const res = await fetch(SHEET_URL);
   const text = await res.text();
-  const rows = text.trim().split("\n").slice(1);
-
-  GROUPS = {};
+  // gviz回傳格式是 /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+  const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
+  const rows = json.table.rows;
+  const players = [];
   for (const row of rows) {
-    const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
-    const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [grp, name, , w, l, d, gf, ga] = clean;
-    if (!grp || grp === "組別") continue;
-    if (!GROUPS[grp]) GROUPS[grp] = [];
-    GROUPS[grp].push([
-      name, getFlagImg(name),
-      parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
-      parseInt(gf)||0, parseInt(ga)||0
-    ]);
+    const name = row.c[0]?.v;
+    const goals = row.c[1]?.v || 0;
+    if (!name || name === "球員") continue;
+    players.push({ name, goals: parseInt(goals) || 0 });
   }
+  return players.sort((a, b) => b.goals - a.goals);
 }
 
-function sortTeams(teams) {
-  return [...teams].sort((a, b) => {
-    const ptsA = a[2]*3+a[4], ptsB = b[2]*3+b[4];
-    if (ptsB !== ptsA) return ptsB - ptsA;
-    const gdA = a[5]-a[6], gdB = b[5]-b[6];
-    if (gdB !== gdA) return gdB - gdA;
-    return b[5] - a[5];
+function render(players) {
+  const hasStarted = players.some(p => p.goals > 0);
+
+  // ── 標準競賽排名：同分同名，下一名跳過 ──
+  let rank = 1;
+  const ranked = players.map((p, i) => {
+    if (i > 0 && p.goals < players[i - 1].goals) {
+      rank = i + 1; // 跳到實際位置
+    }
+    return { ...p, rank };
   });
-}
 
-function renderGroup(groupKey) {
-  const teams = sortTeams(GROUPS[groupKey] || []);
-  const hasPlayed = teams.some(t => t[2]+t[3]+t[4] > 0);
-  const allSame = teams.every(t => (t[2]*3+t[4]) === (teams[0]?.[2]*3+teams[0]?.[4]));
-
-  const rows = teams.map((t, i) => {
-    const rank = i+1;
-    const pts = t[2]*3+t[4];
-    const mp = t[2]+t[3]+t[4];
-    const gd = t[5]-t[6];
-    const gdStr = mp > 0 ? (gd > 0 ? `+${gd}` : `${gd}`) : "—";
-    const sc = (!hasPlayed || allSame) ? "status-e" : rank <= 2 ? "status-q" : rank === 3 ? "status-t" : "status-e";
-    const ptsCls = pts >= 6 ? "pts-high" : pts >= 3 ? "pts-mid" : "";
+  const rows = ranked.map(p => {
+    const rankClass = (hasStarted && p.rank === 1) ? "rank-1" : (hasStarted && p.rank === 2) ? "rank-2" : (hasStarted && p.rank === 3) ? "rank-3" : "rank-other";
+    const rankIcon = (hasStarted && p.rank === 1) ? "🥇" : (hasStarted && p.rank === 2) ? "🥈" : (hasStarted && p.rank === 3) ? "🥉" : p.rank;
+    const goalsClass = (hasStarted && p.rank === 1) ? "goals-1" : (hasStarted && p.rank === 2) ? "goals-2" : (hasStarted && p.rank === 3) ? "goals-3" : "goals-other";
+    const playerClass = (hasStarted && p.rank === 1) ? "player-name-1" : "";
     return `<tr>
-      <td class="col-rank">${rank}</td>
-      <td class="col-team"><div class="team-cell">
-        <div class="status-bar ${sc}"></div>
-        <span class="team-flag">${t[1]}</span>
-        <span class="team-name">${t[0]}</span>
-      </div></td>
-      <td>${mp}</td><td>${t[2]}</td><td>${t[4]}</td><td>${t[3]}</td>
-      <td>${t[5]}</td><td>${t[6]}</td>
-      <td class="col-gd">${gdStr}</td>
-      <td class="col-pts ${ptsCls}">${pts}</td>
+      <td class="col-rank"><span class="${rankClass}">${rankIcon}</span></td>
+      <td class="col-player"><span class="${playerClass}">${p.name}</span></td>
+      <td class="col-goals"><span class="${goalsClass}">${p.goals}</span></td>
     </tr>`;
   }).join("");
 
   document.getElementById("contentArea").innerHTML = `
-    <div class="wc-table-wrap"><table>
+    <div class="gb-table-wrap"><table>
       <thead><tr>
-        <th class="col-rank">#</th><th class="col-team">球隊</th>
-        <th>賽</th><th>勝</th><th>平</th><th>負</th>
-        <th>進</th><th>失</th><th>淨</th><th>分</th>
+        <th class="col-rank">#</th>
+        <th class="col-player">球員</th>
+        <th>進球數</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table></div>`;
 }
 
-function buildTabs() {
-  const keys = Object.keys(GROUPS).sort();
-  document.getElementById("tabsContainer").innerHTML = keys.map(k =>
-    `<button class="wc-tab ${k===activeGroup?"active":""}" onclick="switchGroup('${k}')">${k} 組</button>`
-  ).join("");
-}
-
-function switchGroup(g) {
-  activeGroup = g;
-  document.querySelectorAll(".wc-tab").forEach(t => {
-    t.classList.toggle("active", t.textContent.trim() === g+" 組");
-  });
-  renderGroup(g);
-}
-
 async function init() {
   try {
-    await fetchData();
+    const players = await fetchData();
     const now = new Date();
-    document.getElementById("lastUpdated").textContent =
-      `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
-    buildTabs();
-    switchGroup(Object.keys(GROUPS).sort()[0]);
+    const timeStr = `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
+    document.getElementById("lastUpdated").textContent = timeStr;
+    document.getElementById("footerNote").textContent = timeStr;
+    render(players);
   } catch(e) {
     document.getElementById("contentArea").innerHTML =
-      `<div class="wc-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
-    document.getElementById("lastUpdated").textContent = "載入失敗";
+      `<div class="gb-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
   }
 }
 
