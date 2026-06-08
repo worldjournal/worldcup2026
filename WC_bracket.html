@@ -306,8 +306,23 @@ function show(id,el){
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
 }
+
+// ── 根據今天日期自動切換到對應輪次 ──────────────────────────
+function autoTab() {
+  const today = new Date();
+  const d = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
+  let tabId;
+  if      (d >= 20260719) tabId = 'final';
+  else if (d >= 20260714) tabId = 'sf';
+  else if (d >= 20260709) tabId = 'qf';
+  else if (d >= 20260704) tabId = 'r16';
+  else                    tabId = 'r32';
+  const tab = document.querySelector(`.tab[onclick="show('${tabId}',this)"]`);
+  if (tab) show(tabId, tab);
+}
+autoTab();
 </script><div class="page-footer">
-  <span>數據來源：FIFA</span>
+  <span>資料來源：FIFA</span>
   <span>所有時間為美東時間（ET）</span>
 </div>
 
