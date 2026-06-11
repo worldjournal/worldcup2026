@@ -84,18 +84,40 @@
 const SHEET_ID = "1k_WZ9R5MS3xxb-SFezMCflNUGkbLKY3Y5BcezQhiJ0c";
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1&t=${Date.now()}`;
 
+// ══ 國旗對照表 ══
+const FLAG_CODES = {
+  "捷克":"CZ","南韓":"KR","墨西哥":"MX","南非":"ZA",
+  "波赫":"BA","加拿大":"CA","卡達":"QA","瑞士":"CH",
+  "巴西":"BR","海地":"HT","摩洛哥":"MA","蘇格蘭":"GB-SCT",
+  "澳洲":"AU","巴拉圭":"PY","土耳其":"TR","美國":"US",
+  "庫拉索":"CW","古拉索":"CW","厄瓜多":"EC","德國":"DE","象牙海岸":"CI",
+  "日本":"JP","荷蘭":"NL","瑞典":"SE","突尼西亞":"TN",
+  "比利時":"BE","埃及":"EG","伊朗":"IR","紐西蘭":"NZ",
+  "維德角":"CV","佛得角":"CV","沙烏地阿拉伯":"SA","西班牙":"ES","烏拉圭":"UY",
+  "法國":"FR","伊拉克":"IQ","挪威":"NO","塞內加爾":"SN",
+  "阿爾及利亞":"DZ","阿根廷":"AR","奧地利":"AT","約旦":"JO",
+  "哥倫比亞":"CO","剛果民主共和國":"CD","葡萄牙":"PT","烏茲別克":"UZ",
+  "巴拿馬":"PA","克羅埃西亞":"HR","加納":"GH","英格蘭":"GB-ENG",
+};
+
+function flagImg(country) {
+  const code = FLAG_CODES[country];
+  if (!code) return "";
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg" width="16" height="11" alt="${country}" style="border-radius:1px;vertical-align:middle;display:inline-block;margin-right:3px;">`;
+}
+
 async function fetchData() {
   const res = await fetch(SHEET_URL);
   const text = await res.text();
-  // gviz回傳格式是 /*O_o*/\ngoogle.visualization.Query.setResponse({...});
   const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
   const rows = json.table.rows;
   const players = [];
   for (const row of rows) {
     const name = row.c[0]?.v;
-    const goals = row.c[1]?.v || 0;
+    const country = row.c[1]?.v || "";
+    const goals = row.c[2]?.v || 0;
     if (!name || name === "球員") continue;
-    players.push({ name, goals: parseInt(goals) || 0 });
+    players.push({ name, country, goals: parseInt(goals) || 0 });
   }
   return players.sort((a, b) => b.goals - a.goals);
 }
@@ -119,7 +141,10 @@ function render(players) {
     const playerClass = (hasStarted && p.rank === 1) ? "player-name-1" : "";
     return `<tr>
       <td class="col-rank"><span class="${rankClass}">${rankIcon}</span></td>
-      <td class="col-player"><span class="${playerClass}">${p.name}</span></td>
+      <td class="col-player">
+        <span class="${playerClass}">${p.name}</span>
+        ${p.country ? `<div style="font-size:10px;color:#888;margin-top:2px;">${flagImg(p.country)}${p.country}</div>` : ''}
+      </td>
       <td class="col-goals"><span class="${goalsClass}">${p.goals}</span></td>
     </tr>`;
   }).join("");
