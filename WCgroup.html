@@ -126,7 +126,10 @@ async function fetchData() {
   for (const row of rows) {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [grp, name, , w, l, d, gf, ga] = clean;
+    
+    // ======= 💡 這裡已經修正：排除了多餘的空逗號，與 Excel 的欄位完全對應 =======
+    const [grp, name, w, l, d, gf, ga] = clean;
+    
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     GROUPS[grp].push([
