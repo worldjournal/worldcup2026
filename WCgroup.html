@@ -93,6 +93,7 @@
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
 const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
+// ══ 國旗代碼對照表（ISO 3166-1 alpha-2）══
 const FLAG_CODES = {
   "捷克":"cz","南韓":"kr","墨西哥":"mx","南非":"za",
   "波赫":"ba","加拿大":"ca","卡達":"qa","瑞士":"ch",
@@ -123,27 +124,15 @@ async function fetchData() {
 
   GROUPS = {};
   for (const row of rows) {
-    if (!row.trim()) continue; // 💡 防錯1：跳過完全空白的列
-    
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    
-    if (clean.length < 2) continue; // 💡 防錯2：如果欄位數量不夠，直接跳過不處理
-    
-    const [grp, name, w, l, d, gf, ga] = clean;
-    
-    if (!grp || grp === "組別" || !name) continue; // 💡 防錯3：防缺少組別或隊名的無效資料
-    
+    const [grp, name, , w, l, d, gf, ga] = clean;
+    if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
-    
-    // 💡 防錯4：使用 Math.abs 確保負數（如之前的 -2）會被自動安全轉換
     GROUPS[grp].push([
       name, getFlagImg(name),
-      Math.abs(parseInt(w)) || 0, 
-      Math.abs(parseInt(l)) || 0, 
-      Math.abs(parseInt(d)) || 0,
-      Math.abs(parseInt(gf)) || 0, 
-      Math.abs(parseInt(ga)) || 0
+      parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
+      parseInt(gf)||0, parseInt(ga)||0
     ]);
   }
 }
@@ -198,10 +187,6 @@ function renderGroup(groupKey) {
 
 function buildTabs() {
   const keys = Object.keys(GROUPS).sort();
-  if (keys.length === 0) {
-    document.getElementById("contentArea").innerHTML = `<div class="wc-state">⚠️ 試算表中沒有找到有效的小組數據，請檢查表格內容。</div>`;
-    return;
-  }
   document.getElementById("tabsContainer").innerHTML = keys.map(k =>
     `<button class="wc-tab ${k===activeGroup?"active":""}" onclick="switchGroup('${k}')">${k} 組</button>`
   ).join("");
@@ -222,14 +207,17 @@ async function init() {
     document.getElementById("lastUpdated").textContent =
       `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
     buildTabs();
+    // 讀取網址參數 ?group=B，若有則顯示指定組別，否則顯示第一組
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupParam = urlParams.get('group');
     const keys = Object.keys(GROUPS).sort();
-    if (keys.length > 0) {
-      switchGroup(keys[0]);
-    }
+    const target = (groupParam && keys.includes(groupParam.toUpperCase()))
+      ? groupParam.toUpperCase()
+      : keys[0];
+    switchGroup(target);
   } catch(e) {
-    console.error(e);
     document.getElementById("contentArea").innerHTML =
-      `<div class="wc-state">⚠️ 資料解析失敗，請確認 Google 試算表格式是否正確。</div>`;
+      `<div class="wc-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
     document.getElementById("lastUpdated").textContent = "載入失敗";
   }
 }
