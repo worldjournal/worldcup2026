@@ -93,7 +93,7 @@
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
 const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
-// ══ 國旗代碼對照表（ISO 3166-1 alpha-2）══
+// ══ 國旗代碼對照表 ══
 const FLAG_CODES = {
   "捷克":"cz","南韓":"kr","墨西哥":"mx","南非":"za",
   "波赫":"ba","加拿大":"ca","卡達":"qa","瑞士":"ch",
@@ -127,12 +127,10 @@ async function fetchData() {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
     
-    // 【修正】對齊 Google 試算表實際順序：組別, 球隊, 勝, 負, 平, 進球, 失球
     const [grp, name, w, l, d, gf, ga] = clean;
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     
-    // 陣列結構固定為：[球隊名, 國旗圖片, 勝, 負, 平, 進球, 失球]
     GROUPS[grp].push([
       name, getFlagImg(name),
       parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
@@ -158,14 +156,13 @@ function renderGroup(groupKey) {
 
   const rows = teams.map((t, i) => {
     const rank = i+1;
-    const pts = t[2]*3+t[4];  // 勝*3 + 平*1
-    const mp = t[2]+t[3]+t[4]; // 勝 + 負 + 平 = 總賽場次
-    const gd = t[5]-t[6];      // 進球 - 失球 = 淨球數
+    const pts = t[2]*3+t[4];
+    const mp = t[2]+t[3]+t[4];
+    const gd = t[5]-t[6];
     const gdStr = mp > 0 ? (gd > 0 ? `+${gd}` : `${gd}`) : "—";
     const sc = (!hasPlayed || allSame) ? "status-e" : rank <= 2 ? "status-q" : rank === 3 ? "status-t" : "status-e";
     const ptsCls = pts >= 6 ? "pts-high" : pts >= 3 ? "pts-mid" : "";
     
-    // 註：t[2]=勝, t[4]=平, t[3]=負, t[5]=進球, t[6]=失球
     return `<tr>
       <td class="col-rank">${rank}</td>
       <td class="col-team"><div class="team-cell">
@@ -201,7 +198,8 @@ function buildTabs() {
 function switchGroup(g) {
   activeGroup = g;
   document.querySelectorAll(".wc-tab").forEach(t => {
-    t.classList.toggle("active", t.textContent.trim() === g+" 組");
+    // 修正比對邏輯，支援大小寫轉換的按鈕狀態切換
+    t.classList.toggle("active", t.textContent.trim().startsWith(g));
   });
   renderGroup(g);
 }
@@ -212,15 +210,22 @@ async function init() {
     const now = new Date();
     document.getElementById("lastUpdated").textContent =
       `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
-    buildTabs();
     
+    // 【功能實現】獲取網址上的 ?group= 參數
     const urlParams = new URLSearchParams(window.location.search);
     const groupParam = urlParams.get('group');
     const keys = Object.keys(GROUPS).sort();
-    const target = (groupParam && keys.includes(groupParam.toUpperCase()))
-      ? groupParam.toUpperCase()
-      : keys[0];
-    switchGroup(target);
+    
+    // 如果有填參數且存在該組別，就顯示參數組別；否則預設顯示抓取到的第一個組別（通常是A）
+    let targetGroup = keys[0] || "A";
+    if (groupParam && keys.includes(groupParam.toUpperCase())) {
+      targetGroup = groupParam.toUpperCase();
+    }
+    
+    activeGroup = targetGroup; // 設定初始活動組別
+    buildTabs();               // 建立分頁標籤
+    switchGroup(targetGroup);  // 切換至目標組別顯示
+    
   } catch(e) {
     document.getElementById("contentArea").innerHTML =
       `<div class="wc-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
