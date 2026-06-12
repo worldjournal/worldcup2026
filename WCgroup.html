@@ -126,9 +126,13 @@ async function fetchData() {
   for (const row of rows) {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [grp, name, , w, l, d, gf, ga] = clean;
+    
+    // 【修正】對齊 Google 試算表實際順序：組別, 球隊, 勝, 負, 平, 進球, 失球
+    const [grp, name, w, l, d, gf, ga] = clean;
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
+    
+    // 陣列結構固定為：[球隊名, 國旗圖片, 勝, 負, 平, 進球, 失球]
     GROUPS[grp].push([
       name, getFlagImg(name),
       parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
@@ -154,12 +158,14 @@ function renderGroup(groupKey) {
 
   const rows = teams.map((t, i) => {
     const rank = i+1;
-    const pts = t[2]*3+t[4];
-    const mp = t[2]+t[3]+t[4];
-    const gd = t[5]-t[6];
+    const pts = t[2]*3+t[4];  // 勝*3 + 平*1
+    const mp = t[2]+t[3]+t[4]; // 勝 + 負 + 平 = 總賽場次
+    const gd = t[5]-t[6];      // 進球 - 失球 = 淨球數
     const gdStr = mp > 0 ? (gd > 0 ? `+${gd}` : `${gd}`) : "—";
     const sc = (!hasPlayed || allSame) ? "status-e" : rank <= 2 ? "status-q" : rank === 3 ? "status-t" : "status-e";
     const ptsCls = pts >= 6 ? "pts-high" : pts >= 3 ? "pts-mid" : "";
+    
+    // 註：t[2]=勝, t[4]=平, t[3]=負, t[5]=進球, t[6]=失球
     return `<tr>
       <td class="col-rank">${rank}</td>
       <td class="col-team"><div class="team-cell">
@@ -207,7 +213,7 @@ async function init() {
     document.getElementById("lastUpdated").textContent =
       `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
     buildTabs();
-    // 讀取網址參數 ?group=B，若有則顯示指定組別，否則顯示第一組
+    
     const urlParams = new URLSearchParams(window.location.search);
     const groupParam = urlParams.get('group');
     const keys = Object.keys(GROUPS).sort();
