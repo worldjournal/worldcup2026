@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026世界盃小組戰績表</title>
-<link href="https://googleapis.com" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -91,7 +91,7 @@
 
 <script>
 const SHEET_ID = "1QxDvl4jOq_vZIAP8OWvetnL7lBgNVeXUZLSwhP6v228";
-const SHEET_URL = () => `https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
+const SHEET_URL = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
 
 // ══ 國旗代碼對照表（ISO 3166-1 alpha-2）══
 const FLAG_CODES = {
@@ -112,7 +112,7 @@ const FLAG_CODES = {
 function getFlagImg(name) {
   const code = FLAG_CODES[name];
   if (!code) return "";
-  return `<img src="https://github.io{code.toUpperCase()}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code.toUpperCase()}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
 }
 let GROUPS = {};
 let activeGroup = "A";
@@ -126,104 +126,103 @@ async function fetchData() {
   for (const row of rows) {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    
-    // 【這裡修正了！】正確接下所有欄位：組別、隊名、賽、勝、敗、和、進球、失球
-    const [grp, name, mp, w, l, d, gf, ga] = clean;
+    const [grp, name, , w, d, l, gf, ga] = clean;
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     GROUPS[grp].push([
-      name, 
-      getFlagImg(name),
-      parseInt(mp)||0,
-      parseInt(w)||0, 
-      parseInt(l)||0, 
-      parseInt(d)||0,
-      parseInt(gf)||0, 
-      parseInt(ga)||0
+      name, getFlagImg(name),
+      parseInt(w)||0, parseInt(l)||0, parseInt(d)||0,
+      parseInt(gf)||0, parseInt(ga)||0
     ]);
   }
 }
 
 function sortTeams(teams) {
   return [...teams].sort((a, b) => {
-    // a[3]是勝(3分)，a[5]是和(1分)
-    const ptsA = a[3]*3 + a[5], ptsB = b[3]*3 + b[5];
+    const ptsA = a[2]*3+a[4], ptsB = b[2]*3+b[4];
     if (ptsB !== ptsA) return ptsB - ptsA;
-    // 淨球數 = 進球(a[6]) - 失球(a[7])
-    const gdA = a[6] - a[7], gdB = b[6] - b[7];
+    const gdA = a[5]-a[6], gdB = b[5]-b[6];
     if (gdB !== gdA) return gdB - gdA;
-    // 總進球數
-    return b[6] - a[6];
+    return b[5] - a[5];
   });
 }
 
 function renderGroup(groupKey) {
   const teams = sortTeams(GROUPS[groupKey] || []);
-  const hasPlayed = teams.some(t => t[2] > 0);
-  const allSame = teams.every(t => (t[3]*3 + t[5]) === (teams[0][3]*3 + teams[0][5]));
+  const hasPlayed = teams.some(t => t[2]+t[3]+t[4] > 0);
+  const allSame = teams.every(t => (t[2]*3+t[4]) === (teams[0]?.[2]*3+teams[0]?.[4]));
 
   const rows = teams.map((t, i) => {
     const rank = i+1;
-    const pts = t[3]*3 + t[5];
-    const mp = t[2];
-    const gd = t[6] - t[7];
+    const pts = t[2]*3+t[4];
+    const mp = t[2]+t[3]+t[4];
+    const gd = t[5]-t[6];
     const gdStr = mp > 0 ? (gd > 0 ? `+${gd}` : `${gd}`) : "—";
     const sc = (!hasPlayed || allSame) ? "status-e" : rank <= 2 ? "status-q" : rank === 3 ? "status-t" : "status-e";
     const ptsCls = pts >= 6 ? "pts-high" : pts >= 3 ? "pts-mid" : "";
-    
     return `<tr>
       <td class="col-rank">${rank}</td>
-      <td class="col-team"><div class="team-cell">${t[1]}<span class="team-name">${t[0]}</span></div></td>
-      <td>${mp}</td>
-      <td>${t[3]}</td>
-      <td>${t[5]}</td>
-      <td>${t[4]}</td>
-      <td>${t[6]}-${t[7]}</td>
+      <td class="col-team"><div class="team-cell">
+        <div class="status-bar ${sc}"></div>
+        <span class="team-flag">${t[1]}</span>
+        <span class="team-name">${t[0]}</span>
+      </div></td>
+      <td>${mp}</td><td>${t[2]}</td><td>${t[4]}</td><td>${t[3]}</td>
+      <td>${t[5]}</td><td>${t[6]}</td>
       <td class="col-gd">${gdStr}</td>
       <td class="col-pts ${ptsCls}">${pts}</td>
-      <td><div class="status-bar ${sc}"></div></td>
     </tr>`;
   }).join("");
 
-  const tableHtml = `
-    <div class="wc-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:28px;"></th>
-            <th class="col-team">球隊</th>
-            <th style="width:36px;">賽</th>
-            <th style="width:32px;">勝</th>
-            <th style="width:32px;">和</th>
-            <th style="width:32px;">負</th>
-            <th style="width:48px;">進/失</th>
-            <th style="width:40px;">淨球</th>
-            <th style="width:40px;">積分</th>
-            <th style="width:12px;"></th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-  `;
-  document.getElementById("contentArea").innerHTML = tableHtml;
+  document.getElementById("contentArea").innerHTML = `
+    <div class="wc-table-wrap"><table>
+      <thead><tr>
+        <th class="col-rank">#</th><th class="col-team">球隊</th>
+        <th>賽</th><th>勝</th><th>平</th><th>負</th>
+        <th>進</th><th>失</th><th>淨</th><th>分</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
 }
 
-function updateTabs() {
-  const container = document.getElementById("tabsContainer");
+function buildTabs() {
   const keys = Object.keys(GROUPS).sort();
-  if (!keys.includes(activeGroup) && keys.length > 0) activeGroup = keys[0];
-  
-  container.innerHTML = keys.map(k => `
-    <button class="wc-tab ${k === activeGroup ? 'active' : ''}" onclick="switchGroup('${k}')">${k}組</button>
-  `).join("");
+  document.getElementById("tabsContainer").innerHTML = keys.map(k =>
+    `<button class="wc-tab ${k===activeGroup?"active":""}" onclick="switchGroup('${k}')">${k} 組</button>`
+  ).join("");
 }
 
-function switchGroup(groupKey) {
-  activeGroup = groupKey;
-  updateTabs();
-  renderGroup(groupKey);
+function switchGroup(g) {
+  activeGroup = g;
+  document.querySelectorAll(".wc-tab").forEach(t => {
+    t.classList.toggle("active", t.textContent.trim() === g+" 組");
+  });
+  renderGroup(g);
 }
 
-function formatTime(date) {
-  const pad = n => String(n).padStart(2, '0');
+async function init() {
+  try {
+    await fetchData();
+    const now = new Date();
+    document.getElementById("lastUpdated").textContent =
+      `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
+    buildTabs();
+    // 讀取網址參數 ?group=B，若有則顯示指定組別，否則顯示第一組
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupParam = urlParams.get('group');
+    const keys = Object.keys(GROUPS).sort();
+    const target = (groupParam && keys.includes(groupParam.toUpperCase()))
+      ? groupParam.toUpperCase()
+      : keys[0];
+    switchGroup(target);
+  } catch(e) {
+    document.getElementById("contentArea").innerHTML =
+      `<div class="wc-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
+    document.getElementById("lastUpdated").textContent = "載入失敗";
+  }
+}
+
+init();
+</script>
+</body>
+</html>
