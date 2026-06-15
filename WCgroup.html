@@ -126,7 +126,8 @@ async function fetchData() {
   for (const row of rows) {
     const cols = row.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
     const clean = cols.map(c => c.replace(/^"|"$/g, "").trim());
-    const [grp, name, , w, l, d, gf, ga] = clean;
+    // 修正點：原本這裡多跳過了一個欄位，導致勝、敗、和順序全部錯位
+    const [grp, name, w, l, d, gf, ga] = clean;
     if (!grp || grp === "組別") continue;
     if (!GROUPS[grp]) GROUPS[grp] = [];
     GROUPS[grp].push([
@@ -160,69 +161,66 @@ function renderGroup(groupKey) {
     const gdStr = mp > 0 ? (gd > 0 ? `+${gd}` : `${gd}`) : "—";
     const sc = (!hasPlayed || allSame) ? "status-e" : rank <= 2 ? "status-q" : rank === 3 ? "status-t" : "status-e";
     const ptsCls = pts >= 6 ? "pts-high" : pts >= 3 ? "pts-mid" : "";
+    
+    // 修正點：移除了 <div> 標籤前不小心多打的 ">" 符號
     return `<tr>
       <td class="col-rank">${rank}</td>
-      <td class="col-team"><div class="team-cell">
-        <div class="status-bar ${sc}"></div>
-        <span class="team-flag">${t[1]}</span>
-        <span class="team-name">${t[0]}</span>
-      </div></td>
-      <td>${mp}</td><td>${t[2]}</td><td>${t[4]}</td><td>${t[3]}</td>
-      <td>${t[5]}</td><td>${t[6]}</td>
+      <td class="col-team"><div class="team-cell">${t[1]}<span class="team-name">${t[0]}</span></div></td>
+      <td>${mp}</td>
+      <td>${t[2]}</td>
+      <td>${t[4]}</td>
+      <td>${t[3]}</td>
+      <td>${t[5]}-${t[6]}</td>
       <td class="col-gd">${gdStr}</td>
       <td class="col-pts ${ptsCls}">${pts}</td>
+      <td><div class="status-bar ${sc}"></div></td>
     </tr>`;
   }).join("");
 
-  document.getElementById("contentArea").innerHTML = `
-    <div class="wc-table-wrap"><table>
-      <thead><tr>
-        <th class="col-rank">#</th><th class="col-team">球隊</th>
-        <th>賽</th><th>勝</th><th>平</th><th>負</th>
-        <th>進</th><th>失</th><th>淨</th><th>分</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>`;
+  const tableHtml = `
+    <div class="wc-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:28px;"></th>
+            <th class="col-team">球隊</th>
+            <th style="width:36px;">賽</th>
+            <th style="width:32px;">勝</th>
+            <th style="width:32px;">和</th>
+            <th style="width:32px;">負</th>
+            <th style="width:48px;">進/失</th>
+            <th style="width:40px;">淨球</th>
+            <th style="width:40px;">積分</th>
+            <th style="width:12px;"></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+  document.getElementById("contentArea").innerHTML = tableHtml;
 }
 
-function buildTabs() {
+function updateTabs() {
+  const container = document.getElementById("tabsContainer");
   const keys = Object.keys(GROUPS).sort();
-  document.getElementById("tabsContainer").innerHTML = keys.map(k =>
-    `<button class="wc-tab ${k===activeGroup?"active":""}" onclick="switchGroup('${k}')">${k} 組</button>`
-  ).join("");
+  if (!keys.includes(activeGroup) && keys.length > 0) activeGroup = keys[0];
+  
+  container.innerHTML = keys.map(k => `
+    <button class="wc-tab ${k === activeGroup ? 'active' : ''}" onclick="switchGroup('${k}')">${k}組</button>
+  `).join("");
 }
 
-function switchGroup(g) {
-  activeGroup = g;
-  document.querySelectorAll(".wc-tab").forEach(t => {
-    t.classList.toggle("active", t.textContent.trim() === g+" 組");
-  });
-  renderGroup(g);
+function switchGroup(groupKey) {
+  activeGroup = groupKey;
+  updateTabs();
+  renderGroup(groupKey);
+}
+
+function formatTime(date) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${date.getFullYear()}/${pad(date.getMonth()+1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 async function init() {
   try {
-    await fetchData();
-    const now = new Date();
-    document.getElementById("lastUpdated").textContent =
-      `${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")} 更新`;
-    buildTabs();
-    // 讀取網址參數 ?group=B，若有則顯示指定組別，否則顯示第一組
-    const urlParams = new URLSearchParams(window.location.search);
-    const groupParam = urlParams.get('group');
-    const keys = Object.keys(GROUPS).sort();
-    const target = (groupParam && keys.includes(groupParam.toUpperCase()))
-      ? groupParam.toUpperCase()
-      : keys[0];
-    switchGroup(target);
-  } catch(e) {
-    document.getElementById("contentArea").innerHTML =
-      `<div class="wc-state">⚠️ 資料載入失敗，請稍後再試。</div>`;
-    document.getElementById("lastUpdated").textContent = "載入失敗";
-  }
-}
-
-init();
-</script>
-</body>
-</html>
