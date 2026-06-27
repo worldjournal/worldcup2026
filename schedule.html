@@ -173,12 +173,13 @@ const MATCHES = [
   {date:"2026-06-26",time:"8:00 PM",home:"Cape Verde",away:"Saudi Arabia",group:"H",venue:"Houston",tv:["FS1","Telemundo"]},
   {date:"2026-06-26",time:"11:00 PM",home:"New Zealand",away:"Belgium",group:"G",venue:"Vancouver",tv:["FOX","Telemundo"]},
   {date:"2026-06-26",time:"11:00 PM",home:"Egypt",away:"Iran",group:"G",venue:"Seattle",tv:["FS1","Telemundo"]},
-  {date:"2026-06-27",time:"3:00 PM",home:"Algeria",away:"Austria",group:"J",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {date:"2026-06-27",time:"3:00 PM",home:"Jordan",away:"Argentina",group:"J",venue:"Atlanta",tv:["FS1","Telemundo"]},
-  {date:"2026-06-27",time:"8:00 PM",home:"Congo DR",away:"Uzbekistan",group:"K",venue:"Kansas City",tv:["FOX","Telemundo"]},
-  {date:"2026-06-27",time:"8:00 PM",home:"Colombia",away:"Portugal",group:"K",venue:"Los Angeles",tv:["FS1","Telemundo"]},
-  {date:"2026-06-27",time:"11:00 PM",home:"Croatia",away:"England",group:"L",venue:"San Francisco Bay Area",tv:["FOX","Telemundo"]},
-  {date:"2026-06-27",time:"11:00 PM",home:"Panama",away:"Ghana",group:"L",venue:"Miami",tv:["FS1","Telemundo"]},
+  // 6/27 — 已根據Google官方時間修正
+  {date:"2026-06-27",time:"5:00 PM",home:"Panama",away:"England",group:"L",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
+  {date:"2026-06-27",time:"5:00 PM",home:"Croatia",away:"Ghana",group:"L",venue:"Philadelphia",tv:["FS1","Telemundo"]},
+  {date:"2026-06-27",time:"7:30 PM",home:"Colombia",away:"Portugal",group:"K",venue:"Los Angeles",tv:["FOX","Telemundo"]},
+  {date:"2026-06-27",time:"7:30 PM",home:"Congo DR",away:"Uzbekistan",group:"K",venue:"Atlanta",tv:["FS1","Telemundo"]},
+  {date:"2026-06-27",time:"10:00 PM",home:"Jordan",away:"Argentina",group:"J",venue:"Dallas",tv:["FOX","Telemundo"]},
+  {date:"2026-06-27",time:"10:00 PM",home:"Algeria",away:"Austria",group:"J",venue:"Kansas City",tv:["FS1","Telemundo"]},
 ];
 
 const DAYS_ZH = ["日","一","二","三","四","五","六"];
@@ -224,14 +225,7 @@ function showDate(date) {
     </div>
   `).join("");
   const activeBtn = document.querySelector(`.date-btn[data-date="${date}"]`);
-  if (activeBtn) {
-    setTimeout(() => {
-      const bar = document.getElementById("dateBar");
-      const barCenter = bar.offsetWidth / 2;
-      const btnCenter = activeBtn.offsetLeft + activeBtn.offsetWidth / 2;
-      bar.scrollLeft = btnCenter - barCenter;
-    }, 100);
-  }
+  if (activeBtn) activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 }
 
 buildDateBar();
