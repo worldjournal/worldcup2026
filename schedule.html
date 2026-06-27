@@ -224,7 +224,14 @@ function showDate(date) {
     </div>
   `).join("");
   const activeBtn = document.querySelector(`.date-btn[data-date="${date}"]`);
-  if (activeBtn) activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  if (activeBtn) {
+    setTimeout(() => {
+      const bar = document.getElementById("dateBar");
+      const barCenter = bar.offsetWidth / 2;
+      const btnCenter = activeBtn.offsetLeft + activeBtn.offsetWidth / 2;
+      bar.scrollLeft = btnCenter - barCenter;
+    }, 100);
+  }
 }
 
 buildDateBar();
