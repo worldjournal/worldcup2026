@@ -268,10 +268,6 @@ const MATCHES = [
 const STAGES = [
   {id:"group", label:"小組賽"},
   {id:"r32",   label:"32強"},
-  {id:"r16",   label:"16強"},
-  {id:"qf",    label:"八強"},
-  {id:"sf",    label:"四強"},
-  {id:"final", label:"決賽"},
 ];
 
 const DAYS_ZH = ["日","一","二","三","四","五","六"];
@@ -300,7 +296,7 @@ function switchStage(stageId) {
 function buildDateBar(stageId) {
   const stageMates = MATCHES.filter(m => m.stage === stageId);
   const dates = [...new Set(stageMates.map(m => m.date))].sort();
-  const today = new Date().toISOString().slice(0,10);
+  const today = todayET();
   const bar = document.getElementById("dateBar");
   bar.innerHTML = "";
   dates.forEach(d => {
@@ -352,10 +348,17 @@ function showDate(date, stageId) {
   if (activeBtn) activeBtn.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
 }
 
+// 用美東時間（ET, UTC-4夏令）取得今天日期
+function todayET() {
+  const now = new Date();
+  const etOffset = -4 * 60;
+  const etNow = new Date(now.getTime() + (etOffset - now.getTimezoneOffset()) * 60000);
+  return etNow.toISOString().slice(0,10);
+}
+
 // 自動偵測今天屬於哪個賽段
 function detectTodayStage() {
-  const today = new Date().toISOString().slice(0,10);
-  // 從後往前找，找到今天有比賽的最早賽段
+  const today = todayET();
   for (const s of STAGES) {
     const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date);
     if (dates.includes(today)) return s.id;
@@ -365,7 +368,7 @@ function detectTodayStage() {
     const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date).sort();
     if (dates.some(d => d >= today)) return s.id;
   }
-  return "group";
+  return "r32";
 }
 
 currentStage = detectTodayStage();
