@@ -3,362 +3,322 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026世界盃賽程表</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<title>2026 FIFA 世界盃｜淘汰賽對陣圖</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --red: #C8102E; --dark: #1a1a2e; --mid: #2d2d44; --gold: #D4AF37;
-    --light: #f5f5f0; --border: #e0ddd5; --text: #1a1a1a; --muted: #888;
-  }
-  body { font-family: 'Noto Sans TC', sans-serif; background: #f8f7f3; color: var(--text); padding: 12px; }
-
-  .wc-widget { max-width: 720px; background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
-
-  .wc-header { background: var(--dark); color: #fff; padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; }
-  .wc-header-left { display: flex; align-items: center; gap: 10px; }
-  .wc-trophy { font-size: 24px; filter: drop-shadow(0 0 6px rgba(212,175,55,.6)); }
-  .wc-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700; letter-spacing: .04em; }
-  .wc-subtitle { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; }
-
-  /* Stage tabs */
-  .stage-tabs { display: flex; background: #111827; border-bottom: 2px solid var(--red); }
-  .stage-tab { flex: 1; padding: 8px 4px; cursor: pointer; border: none; background: none;
-    color: rgba(255,255,255,.45); font-family: inherit; font-size: 11px; font-weight: 700;
-    text-align: center; white-space: nowrap; transition: color .2s; letter-spacing: .02em; }
-  .stage-tab:hover { color: rgba(255,255,255,.8); }
-  .stage-tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); margin-bottom: -2px; }
-
-  .date-bar { background: var(--mid); overflow-x: auto; scrollbar-width: none; display: flex; }
-  .date-bar::-webkit-scrollbar { display: none; }
-  .date-btn { flex: 0 0 auto; padding: 9px 14px; cursor: pointer; border: none; background: none; color: rgba(255,255,255,.5); font-family: inherit; font-size: 12px; font-weight: 700; text-align: center; white-space: nowrap; transition: color .2s; line-height: 1.4; }
-  .date-btn:hover { color: #fff; }
-  .date-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); margin-bottom: -2px; }
-  .date-btn.today { color: #fff; }
-  .date-btn .day-num { font-size: 16px; display: block; }
-  .date-btn .day-name { font-size: 10px; opacity: .7; }
-
-  .matches { padding: 8px 0; }
-  .match-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f0ede8; gap: 12px; }
-  .match-row:last-child { border-bottom: none; }
-  .match-row:hover { background: #fdfcf8; }
-
-  .match-time { font-size: 15px; font-weight: 700; color: var(--dark); min-width: 58px; }
-  .match-teams { flex: 1; }
-  .match-teams .teams { font-size: 16px; font-weight: 500; }
-  .match-teams .meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
-  .match-label { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--light);
-    padding: 3px 8px; border-radius: 2px; white-space: nowrap; text-align: center; min-width: 48px; }
-  .match-label.knockout { background: #fff3cd; color: #7a5c00; }
-  .match-label.r16 { background: #fde8e8; color: #8b0000; }
-
-  .match-tv { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .tv-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 2px; white-space: nowrap; }
-  .tv-FOX { background: #003087; color: #fff; }
-  .tv-FS1 { background: #c8102e; color: #fff; }
-  .tv-Telemundo { background: #7b2d8b; color: #fff; }
-
-  .no-matches { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 14px; }
-
-  .wc-legend { display: flex; gap: 12px; padding: 10px 14px; background: var(--light); border-top: 1px solid var(--border); flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
-
-  .wc-footer { padding: 8px 14px; background: var(--light); border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
-  .wc-footer span { font-size: 11px; color: var(--muted); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Noto Sans TC',sans-serif; background:#f8f7f3; color:#222; }
+.page-header { background:#1a1a2e; color:#fff; padding:14px 18px 12px; display:flex; align-items:center; justify-content:space-between; }
+.page-header-left { display:flex; align-items:center; gap:10px; }
+.page-header-icon { font-size:22px; filter:drop-shadow(0 0 6px rgba(212,175,55,.6)); }
+.page-header-title { font-family:'Noto Serif TC',serif; font-size:15px; font-weight:700; letter-spacing:.04em; }
+.page-header-sub { font-size:10px; color:rgba(255,255,255,.5); letter-spacing:.06em; margin-top:2px; }
+.page-footer { padding:8px 14px; background:#f5f5f0; border-top:1px solid #e0ddd5; display:flex; justify-content:space-between; align-items:center; }
+.page-footer span { font-size:10px; color:#888; }
+.tabs { display:flex; gap:4px; padding:12px 20px; background:#fff; border-bottom:1px solid #ddd; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { padding:7px 14px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; background:#eee; border:1px solid #ddd; color:#555; }
+.tab.active { background:#333; border-color:#333; color:#fff; }
+.bracket-wrap { overflow-x:auto; padding:20px; }
+.round-panel { display:none; }
+.round-panel.active { display:block; }
+.match { background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden; width:185px; box-shadow:0 1px 4px rgba(0,0,0,0.08); flex-shrink:0; }
+.match.final-card { border:2px solid #c8a84b; }
+.match.third-card { border:1px solid #bbb; background:#fafafa; }
+.match-title { font-size:11px; font-weight:700; color:#333; padding:5px 8px 2px; text-align:center; border-bottom:1px solid #f0f0f0; }
+.match.final-card .match-title { color:#c8a84b; }
+.match-sub { font-size:9px; color:#999; padding:0 8px 4px; text-align:center; border-bottom:1px solid #f0f0f0; }
+.team { display:flex; align-items:center; padding:5px 8px; gap:6px; border-bottom:1px solid #f0f0f0; }
+.team:last-of-type { border-bottom:none; }
+.flag { font-size:12px; width:18px; text-align:center; flex-shrink:0; }
+.tname { font-size:10px; font-weight:500; color:#222; flex:1; line-height:1.3; }
+.tname.tbd { color:#bbb; font-style:italic; font-weight:400; }
+.tscore { font-size:12px; font-weight:700; color:#333; min-width:22px; text-align:center; background:#f0f0f0; border-radius:3px; padding:1px 4px; }
+.match-foot { font-size:8px; color:#aaa; padding:3px 8px; background:#fafafa; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between; }
 </style>
 </head>
 <body>
-<div class="wc-widget">
-  <div class="wc-header">
-    <div class="wc-header-left">
-      <span class="wc-trophy">⚽</span>
-      <div>
-        <div class="wc-title">2026 FIFA 世界盃 — 賽程與轉播</div>
-        <div class="wc-subtitle">所有時間為美東時間（ET）</div>
-      </div>
+<div class="page-header">
+  <div class="page-header-left">
+    <span class="page-header-icon">🏆</span>
+    <div>
+      <div class="page-header-title">2026 FIFA 世界盃 — 淘汰賽對陣圖</div>
+      <div class="page-header-sub">FIFA World Cup · USA / CAN / MEX</div>
     </div>
   </div>
-  <div class="stage-tabs" id="stageTabs"></div>
-  <div class="date-bar" id="dateBar"></div>
-  <div class="matches" id="matchList"></div>
-  <div class="wc-legend">
-    <div class="legend-item"><span class="tv-badge tv-FOX">FOX</span>英語免費頻道</div>
-    <div class="legend-item"><span class="tv-badge tv-FS1">FS1</span>英語有線頻道</div>
-    <div class="legend-item"><span class="tv-badge tv-Telemundo">Telemundo</span>西語頻道</div>
-  </div>
-  <div class="wc-footer">
-    <span>資料來源：FIFA／worldcuppass.com</span>
-  </div>
 </div>
-
+<div class="tabs">
+  <div class="tab active" onclick="show('r32',this)">32強</div>
+  <div class="tab" onclick="show('r16',this)">16強</div>
+  <div class="tab" onclick="show('qf',this)">8強</div>
+  <div class="tab" onclick="show('sf',this)">準決賽</div>
+  <div class="tab" onclick="show('final',this)">決賽</div>
+</div>
+<div class="bracket-wrap">
+  <div class="round-panel active" id="r32"></div>
+  <div class="round-panel" id="r16"></div>
+  <div class="round-panel" id="qf"></div>
+  <div class="round-panel" id="sf"></div>
+  <div class="round-panel" id="final"></div>
+</div>
 <script>
-const TEAM_ZH = {
-  "Mexico":"墨西哥","South Africa":"南非","South Korea":"南韓","Czechia":"捷克",
-  "Canada":"加拿大","Bosnia and Herzegovina":"波赫","USA":"美國","Paraguay":"巴拉圭",
-  "Qatar":"卡達","Switzerland":"瑞士","Brazil":"巴西","Morocco":"摩洛哥",
-  "Haiti":"海地","Scotland":"蘇格蘭","Australia":"澳洲","Türkiye":"土耳其",
-  "Germany":"德國","Curaçao":"古拉索","Netherlands":"荷蘭","Japan":"日本",
-  "Ivory Coast":"象牙海岸","Ecuador":"厄瓜多","Tunisia":"突尼西亞","Sweden":"瑞典",
-  "Spain":"西班牙","Cape Verde":"維德角","Cabo Verde":"維德角","Belgium":"比利時","Egypt":"埃及",
-  "Saudi Arabia":"沙烏地阿拉伯","Uruguay":"烏拉圭","Iran":"伊朗","New Zealand":"紐西蘭",
-  "France":"法國","Senegal":"塞內加爾","Iraq":"伊拉克","Norway":"挪威",
-  "Argentina":"阿根廷","Algeria":"阿爾及利亞","Austria":"奧地利","Jordan":"約旦",
-  "Portugal":"葡萄牙","Congo DR":"民主剛果","England":"英格蘭","Croatia":"克羅埃西亞",
-  "Ghana":"迦納","Panama":"巴拿馬","Uzbekistan":"烏茲別克","Colombia":"哥倫比亞",
-  "DR Congo":"民主剛果",
+// ============================================================
+// 依照 ESPN bracket 順序排列（M73–M88）
+// tv: 轉播台
+// ============================================================
+const M = {
+  // ── 32強 (6/28–7/3) ──────────────────────────────────────
+  // 6/28 下午3時 洛杉磯
+  M73:{date:"6/28",time:"下午3時ET",venue:"洛杉磯",tv:"FOX/Tele",
+    a:{n:"南非",s:""},b:{n:"加拿大",s:""}},
+  // 6/29 下午4時30 波士頓
+  M74:{date:"6/29",time:"下午4時30ET",venue:"波士頓",tv:"FOX/Tele",
+    a:{n:"德國",s:""},b:{n:"巴拉圭",s:""}},
+  // 6/30 下午5時 紐約/新澤西
+  M75:{date:"6/30",time:"下午5時ET",venue:"紐約/新澤西",tv:"FOX/Tele",
+    a:{n:"法國",s:""},b:{n:"瑞典",s:""}},
+  // 6/29 晚上9時 蒙特雷
+  M76:{date:"6/29",time:"晚上9時ET",venue:"蒙特雷",tv:"FOX/Tele",
+    a:{n:"荷蘭",s:""},b:{n:"摩洛哥",s:""}},
+  // 6/29 下午1時 休士頓
+  M77:{date:"6/29",time:"下午1時ET",venue:"休士頓",tv:"FOX/Tele",
+    a:{n:"巴西",s:""},b:{n:"日本",s:""}},
+  // 6/30 下午1時 達拉斯
+  M78:{date:"6/30",time:"下午1時ET",venue:"達拉斯",tv:"FOX/Tele",
+    a:{n:"象牙海岸",s:""},b:{n:"挪威",s:""}},
+  // 6/30 晚上9時 墨西哥城
+  M79:{date:"6/30",time:"晚上9時ET",venue:"墨西哥城",tv:"FOX/Tele",
+    a:{n:"墨西哥",s:""},b:{n:"厄瓜多",s:""}},
+  // 7/1 中午12時 亞特蘭大
+  M80:{date:"7/1",time:"中午12時ET",venue:"亞特蘭大",tv:"FOX/Tele",
+    a:{n:"英格蘭",s:""},b:{n:"民主剛果",s:""}},
+  // 7/1 下午4時 西雅圖  ← FS1
+  M81:{date:"7/1",time:"下午4時ET",venue:"西雅圖",tv:"FS1/Tele",
+    a:{n:"比利時",s:""},b:{n:"塞內加爾",s:""}},
+  // 7/1 晚上8時 舊金山灣區
+  M82:{date:"7/1",time:"晚上8時ET",venue:"舊金山灣區",tv:"FOX/Tele",
+    a:{n:"美國",s:""},b:{n:"波赫",s:""}},
+  // 7/2 晚上7時 多倫多
+  M83:{date:"7/2",time:"晚上7時ET",venue:"多倫多",tv:"FOX/Tele",
+    a:{n:"葡萄牙",s:""},b:{n:"克羅埃西亞",s:""}},
+  // 7/2 下午3時 洛杉磯
+  M84:{date:"7/2",time:"下午3時ET",venue:"洛杉磯",tv:"FOX/Tele",
+    a:{n:"西班牙",s:""},b:{n:"奧地利",s:""}},
+  // 7/2 晚上11時 溫哥華  ← FS1
+  M85:{date:"7/2",time:"晚上11時ET",venue:"溫哥華",tv:"FS1/Tele",
+    a:{n:"瑞士",s:""},b:{n:"阿爾及利亞",s:""}},
+  // 7/3 晚上9時30 堪薩斯城
+  M86:{date:"7/3",time:"晚上9時30ET",venue:"堪薩斯城",tv:"FOX/Tele",
+    a:{n:"哥倫比亞",s:""},b:{n:"迦納",s:""}},
+  // 7/3 下午6時 邁阿密
+  M87:{date:"7/3",time:"下午6時ET",venue:"邁阿密",tv:"FOX/Tele",
+    a:{n:"阿根廷",s:""},b:{n:"維德角",s:""}},
+  // 7/3 下午2時 達拉斯
+  M88:{date:"7/3",time:"下午2時ET",venue:"達拉斯",tv:"FOX/Tele",
+    a:{n:"澳洲",s:""},b:{n:"埃及",s:""}},
+
+  // ── 16強 (7/4–7/7) ──────────────────────────────────────
+  // M89: W2(法國/瑞典) vs W5(葡萄牙/克羅埃西亞)  7/4 下午5時 費城
+  M89:{date:"7/4",time:"下午5時ET",venue:"費城",tv:"FOX/Tele",
+    a:{n:"法國/瑞典",s:""},b:{n:"葡萄牙/克羅埃西亞",s:""}},
+  // M90: W1(德國/巴拉圭) vs W3(加拿大)  7/4 下午1時 休士頓
+  M90:{date:"7/4",time:"下午1時ET",venue:"休士頓",tv:"FOX/Tele",
+    a:{n:"德國/巴拉圭",s:""},b:{n:"加拿大",s:""}},
+  // M91: W4(巴西/日本) vs W6(象牙海岸/挪威)  7/5 下午4時 紐約/新澤西
+  M91:{date:"7/5",time:"下午4時ET",venue:"紐約/新澤西",tv:"FOX/Tele",
+    a:{n:"巴西/日本",s:""},b:{n:"象牙海岸/挪威",s:""}},
+  // M92: W7(墨西哥/厄瓜多) vs W8(英格蘭/民主剛果)  7/5 晚上8時 墨西哥城
+  M92:{date:"7/5",time:"晚上8時ET",venue:"墨西哥城",tv:"FOX/Tele",
+    a:{n:"墨西哥/厄瓜多",s:""},b:{n:"英格蘭/民主剛果",s:""}},
+  // M93: W11(比利時/塞內加爾) vs W12(西班牙/奧地利)  7/6 下午3時 達拉斯
+  M93:{date:"7/6",time:"下午3時ET",venue:"達拉斯",tv:"FOX/Tele",
+    a:{n:"比利時/塞內加爾",s:""},b:{n:"西班牙/奧地利",s:""}},
+  // M94: W9(美國/波赫) vs W10(荷蘭/摩洛哥)  7/6 晚上8時 西雅圖
+  M94:{date:"7/6",time:"晚上8時ET",venue:"西雅圖",tv:"FOX/Tele",
+    a:{n:"美國/波赫",s:""},b:{n:"荷蘭/摩洛哥",s:""}},
+  // M95: W14(阿根廷/維德角) vs W16(哥倫比亞/迦納)  7/7 中午12時 亞特蘭大
+  M95:{date:"7/7",time:"中午12時ET",venue:"亞特蘭大",tv:"FOX/Tele",
+    a:{n:"阿根廷/維德角",s:""},b:{n:"哥倫比亞/迦納",s:""}},
+  // M96: W13(澳洲/埃及) vs W15(瑞士/阿爾及利亞)  7/7 下午4時 溫哥華
+  M96:{date:"7/7",time:"下午4時ET",venue:"溫哥華",tv:"FOX/Tele",
+    a:{n:"澳洲/埃及",s:""},b:{n:"瑞士/阿爾及利亞",s:""}},
+
+  // ── 8強 (7/9–7/11) ──────────────────────────────────────
+  M97:{date:"7/9",time:"下午4時ET",venue:"波士頓",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+  M98:{date:"7/10",time:"下午3時ET",venue:"洛杉磯",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+  M99:{date:"7/11",time:"下午5時ET",venue:"邁阿密",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+  M100:{date:"7/11",time:"晚上9時ET",venue:"堪薩斯城",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+
+  // ── 準決賽 (7/14–7/15) ───────────────────────────────────
+  M101:{date:"7/14",time:"下午3時ET",venue:"達拉斯",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+  M102:{date:"7/15",time:"下午3時ET",venue:"亞特蘭大",tv:"FOX/Tele",
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
+
+  // ── 季軍賽 & 決賽 ─────────────────────────────────────────
+  M103:{date:"7/18",time:"下午5時ET",venue:"邁阿密 · 硬石球場",tv:"FOX/Tele",
+    a:{n:"準決賽敗者",s:""},b:{n:"準決賽敗者",s:""}},
+  M104:{date:"7/19",time:"下午3時ET",venue:"紐約/新澤西 · 大都會人壽球場",tv:"FOX/Tele",
+    a:{n:"準決賽勝者",s:""},b:{n:"準決賽勝者",s:""}},
 };
-const zh = t => TEAM_ZH[t] || t;
 
-const VENUE_ZH = {
-  "Mexico City":"墨西哥城","Guadalajara":"瓜達拉哈拉","Toronto":"多倫多",
-  "Los Angeles":"洛杉磯","San Francisco Bay Area":"舊金山灣區",
-  "New York/New Jersey":"紐約/新澤西","Boston":"波士頓","Vancouver":"溫哥華",
-  "Houston":"休士頓","Dallas":"達拉斯","Philadelphia":"費城","Monterrey":"蒙特雷",
-  "Atlanta":"亞特蘭大","Seattle":"西雅圖","Miami":"邁阿密","Kansas City":"堪薩斯城",
+const FLAG_CODES = {
+  "捷克":"CZ","南韓":"KR","墨西哥":"MX","南非":"ZA",
+  "波赫":"BA","加拿大":"CA","卡達":"QA","瑞士":"CH",
+  "巴西":"BR","海地":"HT","摩洛哥":"MA","蘇格蘭":"GB-SCT",
+  "澳洲":"AU","巴拉圭":"PY","土耳其":"TR","美國":"US",
+  "庫拉索":"CW","古拉索":"CW","厄瓜多":"EC","德國":"DE","象牙海岸":"CI",
+  "日本":"JP","荷蘭":"NL","瑞典":"SE","突尼西亞":"TN",
+  "比利時":"BE","埃及":"EG","伊朗":"IR","紐西蘭":"NZ",
+  "維德角":"CV","佛得角":"CV","沙烏地阿拉伯":"SA","西班牙":"ES","烏拉圭":"UY",
+  "法國":"FR","伊拉克":"IQ","挪威":"NO","塞內加爾":"SN",
+  "阿爾及利亞":"DZ","阿根廷":"AR","奧地利":"AT","約旦":"JO",
+  "哥倫比亞":"CO","民主剛果":"CD","剛果民主共和國":"CD","葡萄牙":"PT","烏茲別克":"UZ",
+  "巴拿馬":"PA","克羅埃西亞":"HR","迦納":"GH","加納":"GH","英格蘭":"GB-ENG",
 };
-const vz = v => VENUE_ZH[v] || v;
+function flagImg(name) {
+  const code = FLAG_CODES[name];
+  if (!code) return `<span style="font-size:12px;color:#ccc;">🏳</span>`;
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
+}
 
-// stage: "group" | "r32" | "r16" | "qf" | "sf" | "final"
-// label: shown in match row (組別 or 賽事名稱)
-// labelClass: "" | "knockout" | "r16"
-const MATCHES = [
-  // ── 小組賽 ──
-  {stage:"group",date:"2026-06-11",time:"3:00 PM",home:"Mexico",away:"South Africa",label:"A組",venue:"Mexico City",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-11",time:"10:00 PM",home:"South Korea",away:"Czechia",label:"A組",venue:"Guadalajara",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-12",time:"3:00 PM",home:"Canada",away:"Bosnia and Herzegovina",label:"B組",venue:"Toronto",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-12",time:"9:00 PM",home:"USA",away:"Paraguay",label:"D組",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-13",time:"3:00 PM",home:"Qatar",away:"Switzerland",label:"B組",venue:"San Francisco Bay Area",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-13",time:"6:00 PM",home:"Brazil",away:"Morocco",label:"C組",venue:"New York/New Jersey",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-13",time:"9:00 PM",home:"Haiti",away:"Scotland",label:"C組",venue:"Boston",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-13",time:"12:00 AM",home:"Australia",away:"Türkiye",label:"D組",venue:"Vancouver",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-14",time:"1:00 PM",home:"Germany",away:"Curaçao",label:"E組",venue:"Houston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-14",time:"4:00 PM",home:"Netherlands",away:"Japan",label:"F組",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-14",time:"7:00 PM",home:"Ivory Coast",away:"Ecuador",label:"E組",venue:"Philadelphia",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-14",time:"10:00 PM",home:"Tunisia",away:"Sweden",label:"F組",venue:"Monterrey",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-15",time:"12:00 PM",home:"Spain",away:"Cape Verde",label:"H組",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-15",time:"3:00 PM",home:"Belgium",away:"Egypt",label:"G組",venue:"Seattle",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-15",time:"6:00 PM",home:"Saudi Arabia",away:"Uruguay",label:"H組",venue:"Miami",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-15",time:"9:00 PM",home:"Iran",away:"New Zealand",label:"G組",venue:"Los Angeles",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-16",time:"3:00 PM",home:"France",away:"Senegal",label:"I組",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-16",time:"6:00 PM",home:"Iraq",away:"Norway",label:"I組",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-16",time:"9:00 PM",home:"Argentina",away:"Algeria",label:"J組",venue:"Kansas City",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-16",time:"12:00 AM",home:"Austria",away:"Jordan",label:"J組",venue:"San Francisco Bay Area",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-17",time:"1:00 PM",home:"Portugal",away:"Congo DR",label:"K組",venue:"Houston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-17",time:"4:00 PM",home:"England",away:"Croatia",label:"L組",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-17",time:"7:00 PM",home:"Ghana",away:"Panama",label:"L組",venue:"Toronto",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-17",time:"10:00 PM",home:"Uzbekistan",away:"Colombia",label:"K組",venue:"Mexico City",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-18",time:"12:00 PM",home:"Czechia",away:"South Africa",label:"A組",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-18",time:"3:00 PM",home:"Switzerland",away:"Bosnia and Herzegovina",label:"B組",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-18",time:"6:00 PM",home:"Canada",away:"Qatar",label:"B組",venue:"Vancouver",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-18",time:"9:00 PM",home:"Mexico",away:"South Korea",label:"A組",venue:"Guadalajara",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-19",time:"12:00 AM",home:"Türkiye",away:"Paraguay",label:"D組",venue:"San Francisco Bay Area",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-19",time:"3:00 PM",home:"USA",away:"Australia",label:"D組",venue:"Seattle",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-19",time:"6:00 PM",home:"Scotland",away:"Morocco",label:"C組",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-19",time:"8:30 PM",home:"Brazil",away:"Haiti",label:"C組",venue:"Philadelphia",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-20",time:"1:00 PM",home:"Netherlands",away:"Sweden",label:"F組",venue:"Houston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-20",time:"4:00 PM",home:"Germany",away:"Ivory Coast",label:"E組",venue:"Toronto",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-20",time:"8:00 PM",home:"Ecuador",away:"Curaçao",label:"E組",venue:"Kansas City",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-20",time:"12:00 AM",home:"Tunisia",away:"Japan",label:"F組",venue:"Monterrey",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-21",time:"12:00 PM",home:"Spain",away:"Saudi Arabia",label:"H組",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-21",time:"3:00 PM",home:"Belgium",away:"Iran",label:"G組",venue:"Los Angeles",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-21",time:"6:00 PM",home:"Uruguay",away:"Cape Verde",label:"H組",venue:"Miami",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-21",time:"9:00 PM",home:"New Zealand",away:"Egypt",label:"G組",venue:"Vancouver",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-22",time:"1:00 PM",home:"Argentina",away:"Austria",label:"J組",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-22",time:"5:00 PM",home:"France",away:"Iraq",label:"I組",venue:"Philadelphia",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-22",time:"8:00 PM",home:"Norway",away:"Senegal",label:"I組",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-22",time:"11:00 PM",home:"Jordan",away:"Algeria",label:"J組",venue:"San Francisco Bay Area",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-23",time:"1:00 PM",home:"Portugal",away:"Uzbekistan",label:"K組",venue:"Houston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-23",time:"4:00 PM",home:"England",away:"Ghana",label:"L組",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-23",time:"7:00 PM",home:"Panama",away:"Croatia",label:"L組",venue:"Toronto",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-23",time:"10:00 PM",home:"Colombia",away:"Congo DR",label:"K組",venue:"Guadalajara",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"3:00 PM",home:"Switzerland",away:"Canada",label:"B組",venue:"Vancouver",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"3:00 PM",home:"Bosnia and Herzegovina",away:"Qatar",label:"B組",venue:"Seattle",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"6:00 PM",home:"Brazil",away:"Scotland",label:"C組",venue:"Miami",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"6:00 PM",home:"Morocco",away:"Haiti",label:"C組",venue:"Atlanta",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"9:00 PM",home:"Mexico",away:"Czechia",label:"A組",venue:"Mexico City",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-24",time:"9:00 PM",home:"South Korea",away:"South Africa",label:"A組",venue:"Monterrey",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"4:00 PM",home:"Ecuador",away:"Germany",label:"E組",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"4:00 PM",home:"Curaçao",away:"Ivory Coast",label:"E組",venue:"Philadelphia",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"7:00 PM",home:"Tunisia",away:"Netherlands",label:"F組",venue:"Kansas City",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"7:00 PM",home:"Japan",away:"Sweden",label:"F組",venue:"Dallas",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"10:00 PM",home:"USA",away:"Türkiye",label:"D組",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-25",time:"10:00 PM",home:"Paraguay",away:"Australia",label:"D組",venue:"San Francisco Bay Area",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"3:00 PM",home:"Norway",away:"France",label:"I組",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"3:00 PM",home:"Senegal",away:"Iraq",label:"I組",venue:"Toronto",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"8:00 PM",home:"Uruguay",away:"Spain",label:"H組",venue:"Guadalajara",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"8:00 PM",home:"Cape Verde",away:"Saudi Arabia",label:"H組",venue:"Houston",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"11:00 PM",home:"New Zealand",away:"Belgium",label:"G組",venue:"Vancouver",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-26",time:"11:00 PM",home:"Egypt",away:"Iran",label:"G組",venue:"Seattle",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"5:00 PM",home:"Panama",away:"England",label:"L組",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"5:00 PM",home:"Croatia",away:"Ghana",label:"L組",venue:"Philadelphia",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"7:30 PM",home:"Colombia",away:"Portugal",label:"K組",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"7:30 PM",home:"Congo DR",away:"Uzbekistan",label:"K組",venue:"Atlanta",tv:["FS1","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"10:00 PM",home:"Jordan",away:"Argentina",label:"J組",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"group",date:"2026-06-27",time:"10:00 PM",home:"Algeria",away:"Austria",label:"J組",venue:"Kansas City",tv:["FS1","Telemundo"]},
+function card(m, type) {
+  const isFinal = type==='final', isThird = type==='third';
+  const cls = isFinal?'match final-card':isThird?'match third-card':'match';
+  const at = m.a.n.includes("待定")||m.a.n.includes("組")||m.a.n.includes("最佳")||m.a.n.includes("敗者")||m.a.n.includes("勝者");
+  const bt = m.b.n.includes("待定")||m.b.n.includes("組")||m.b.n.includes("最佳")||m.b.n.includes("敗者")||m.b.n.includes("勝者");
+  const title = isFinal?'🏆 2026 FIFA 世界盃 決賽':isThird?'🥉 季軍賽':'';
+  const sub = isFinal||isThird ? `<div class="match-sub">${m.venue}</div>` : '';
+  const titleHtml = title ? `<div class="match-title">${title}</div>${sub}` : '';
+  const sa = m.a.s !== "" ? m.a.s : "–";
+  const sb = m.b.s !== "" ? m.b.s : "–";
+  const tvHtml = m.tv ? `<span>${m.tv}</span>` : '';
+  return `<div class="${cls}">
+    ${titleHtml}
+    <div class="team"><div class="flag">${flagImg(m.a.n)}</div><div class="tname${at?" tbd":""}">${m.a.n}</div><div class="tscore">${sa}</div></div>
+    <div class="team"><div class="flag">${flagImg(m.b.n)}</div><div class="tname${bt?" tbd":""}">${m.b.n}</div><div class="tscore">${sb}</div></div>
+    <div class="match-foot"><span>${m.date} · ${m.time}</span>${isFinal||isThird?tvHtml:`<span>${m.venue}</span>`}</div>
+  </div>`;
+}
 
-  // ── 32強賽 (Round of 32) M73–M88 ──
-  {stage:"r32",date:"2026-06-28",time:"3:00 PM",home:"南非",away:"加拿大",label:"32強",labelClass:"knockout",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-29",time:"1:00 PM",home:"巴西",away:"日本",label:"32強",labelClass:"knockout",venue:"Houston",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-29",time:"4:30 PM",home:"德國",away:"巴拉圭",label:"32強",labelClass:"knockout",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-29",time:"9:00 PM",home:"荷蘭",away:"摩洛哥",label:"32強",labelClass:"knockout",venue:"Monterrey",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-30",time:"1:00 PM",home:"象牙海岸",away:"挪威",label:"32強",labelClass:"knockout",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-30",time:"5:00 PM",home:"法國",away:"瑞典",label:"32強",labelClass:"knockout",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-06-30",time:"9:00 PM",home:"墨西哥",away:"厄瓜多",label:"32強",labelClass:"knockout",venue:"Mexico City",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-01",time:"12:00 PM",home:"英格蘭",away:"民主剛果",label:"32強",labelClass:"knockout",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-01",time:"4:00 PM",home:"比利時",away:"塞內加爾",label:"32強",labelClass:"knockout",venue:"Seattle",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-01",time:"8:00 PM",home:"美國",away:"波赫",label:"32強",labelClass:"knockout",venue:"San Francisco Bay Area",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-02",time:"3:00 PM",home:"西班牙",away:"奧地利",label:"32強",labelClass:"knockout",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-02",time:"7:00 PM",home:"葡萄牙",away:"克羅埃西亞",label:"32強",labelClass:"knockout",venue:"Toronto",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-02",time:"11:00 PM",home:"瑞士",away:"阿爾及利亞",label:"32強",labelClass:"knockout",venue:"Vancouver",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-03",time:"2:00 PM",home:"澳洲",away:"埃及",label:"32強",labelClass:"knockout",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-03",time:"6:00 PM",home:"阿根廷",away:"維德角",label:"32強",labelClass:"knockout",venue:"Miami",tv:["FOX","Telemundo"]},
-  {stage:"r32",date:"2026-07-03",time:"9:30 PM",home:"哥倫比亞",away:"迦納",label:"32強",labelClass:"knockout",venue:"Kansas City",tv:["FOX","Telemundo"]},
+function buildBracket(containerId, rounds) {
+  const CARD_H = 96;
+  const container = document.getElementById(containerId);
+  const n0 = rounds[0].matches.length;
+  const GAP_H = n0 >= 16 ? 28 : 12;
+  const totalH = n0 * CARD_H + (n0 - 1) * GAP_H;
 
-  // ── 16強賽 (Round of 16) M89–M96 ──
-  // M90: Winner M73 vs Winner M75
-  // M90: 南非/加拿大勝者 vs 荷蘭/摩洛哥勝者 — 7/4 1PM 休士頓
-  {stage:"r16",date:"2026-07-04",time:"1:00 PM",home:"加拿大",away:"荷蘭/摩洛哥",label:"16強",labelClass:"r16",matchId:"M90",venue:"Houston",tv:["FOX","Telemundo"]},
-  // M89: 德國/巴拉圭勝者 vs 法國/瑞典勝者 — 7/4 5PM 費城
-  {stage:"r16",date:"2026-07-04",time:"5:00 PM",home:"德國/巴拉圭",away:"法國/瑞典",label:"16強",labelClass:"r16",matchId:"M89",venue:"Philadelphia",tv:["FOX","Telemundo"]},
-  // M91: 葡萄牙/克羅埃西亞勝者 vs 西班牙/奧地利勝者 — 7/5 4PM 紐約/新澤西
-  {stage:"r16",date:"2026-07-05",time:"4:00 PM",home:"葡萄牙/克羅埃西亞",away:"西班牙/奧地利",label:"16強",labelClass:"r16",matchId:"M91",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  // M92: 美國/波赫勝者 vs 比利時/塞內加爾勝者 — 7/5 8PM 墨西哥城
-  {stage:"r16",date:"2026-07-05",time:"8:00 PM",home:"美國/波赫",away:"比利時/塞內加爾",label:"16強",labelClass:"r16",matchId:"M92",venue:"Mexico City",tv:["FOX","Telemundo"]},
-  // M93: 巴西/日本勝者 vs 象牙海岸/挪威勝者 — 7/6 3PM 達拉斯
-  {stage:"r16",date:"2026-07-06",time:"3:00 PM",home:"巴西/日本",away:"象牙海岸/挪威",label:"16強",labelClass:"r16",matchId:"M93",venue:"Dallas",tv:["FOX","Telemundo"]},
-  // M94: 墨西哥/厄瓜多勝者 vs 英格蘭/民主剛果勝者 — 7/6 8PM 西雅圖
-  {stage:"r16",date:"2026-07-06",time:"8:00 PM",home:"墨西哥/厄瓜多",away:"英格蘭/民主剛果",label:"16強",labelClass:"r16",matchId:"M94",venue:"Seattle",tv:["FOX","Telemundo"]},
-  // M95: 阿根廷/維德角勝者 vs 澳洲/埃及勝者 — 7/7 12PM 亞特蘭大
-  {stage:"r16",date:"2026-07-07",time:"12:00 PM",home:"阿根廷/維德角",away:"澳洲/埃及",label:"16強",labelClass:"r16",matchId:"M95",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  // M96: 瑞士/阿爾及利亞勝者 vs 哥倫比亞/迦納勝者 — 7/7 4PM 溫哥華
-  {stage:"r16",date:"2026-07-07",time:"4:00 PM",home:"瑞士/阿爾及利亞",away:"哥倫比亞/迦納",label:"16強",labelClass:"r16",matchId:"M96",venue:"Vancouver",tv:["FOX","Telemundo"]},
-
-  // ── 八強 (Quarterfinals) M97–M100 ──
-  {stage:"qf",date:"2026-07-09",time:"4:00 PM",home:"M89勝者",away:"M90勝者",label:"八強",labelClass:"r16",matchId:"M97",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"qf",date:"2026-07-10",time:"3:00 PM",home:"M93勝者",away:"M94勝者",label:"八強",labelClass:"r16",matchId:"M98",venue:"Los Angeles",tv:["FOX","Telemundo"]},
-  {stage:"qf",date:"2026-07-11",time:"5:00 PM",home:"M91勝者",away:"M92勝者",label:"八強",labelClass:"r16",matchId:"M99",venue:"Miami",tv:["FOX","Telemundo"]},
-  {stage:"qf",date:"2026-07-11",time:"9:00 PM",home:"M95勝者",away:"M96勝者",label:"八強",labelClass:"r16",matchId:"M100",venue:"Kansas City",tv:["FOX","Telemundo"]},
-
-  // ── 四強 (Semifinals) M101–M102 ──
-  {stage:"sf",date:"2026-07-14",time:"3:00 PM",home:"M97勝者",away:"M98勝者",label:"四強",labelClass:"r16",matchId:"M101",venue:"Dallas",tv:["FOX","Telemundo"]},
-  {stage:"sf",date:"2026-07-15",time:"3:00 PM",home:"M99勝者",away:"M100勝者",label:"四強",labelClass:"r16",matchId:"M102",venue:"Atlanta",tv:["FOX","Telemundo"]},
-
-  // ── 季軍賽 M103 ──
-  {stage:"final",date:"2026-07-18",time:"5:00 PM",home:"M101敗者",away:"M102敗者",label:"季軍賽",labelClass:"r16",matchId:"M103",venue:"Miami",tv:["FOX","Telemundo"]},
-
-  // ── 決賽 M104 ──
-  {stage:"final",date:"2026-07-19",time:"3:00 PM",home:"M101勝者",away:"M102勝者",label:"決賽",labelClass:"r16",matchId:"M104",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-];
-
-const STAGES = [
-  {id:"group", label:"小組賽"},
-  {id:"r32",   label:"32強"},
-];
-
-const DAYS_ZH = ["日","一","二","三","四","五","六"];
-
-let currentStage = "group";
-
-function buildStageTabs() {
-  const bar = document.getElementById("stageTabs");
-  STAGES.forEach(s => {
-    const btn = document.createElement("button");
-    btn.className = "stage-tab" + (s.id === currentStage ? " active" : ""); // currentStage already set
-    btn.textContent = s.label;
-    btn.dataset.stage = s.id;
-    btn.onclick = () => switchStage(s.id);
-    bar.appendChild(btn);
+  let labelsHtml = '';
+  rounds.forEach((r, i) => {
+    labelsHtml += `<div style="width:185px;flex-shrink:0;font-size:10px;font-weight:700;color:#888;text-align:center;letter-spacing:1px;padding-bottom:8px;">${r.label}</div>`;
+    if (i < rounds.length - 1) labelsHtml += `<div style="width:28px;flex-shrink:0;"></div>`;
   });
-}
 
-function switchStage(stageId) {
-  currentStage = stageId;
-  document.querySelectorAll(".stage-tab").forEach(b =>
-    b.classList.toggle("active", b.dataset.stage === stageId));
-  buildDateBar(stageId);
-}
+  let bodyHtml = `<div style="display:flex;align-items:flex-start;">`;
+  rounds.forEach((r, ri) => {
+    const n = r.matches.length;
+    const slotH = totalH / n;
+    bodyHtml += `<div style="width:185px;flex-shrink:0;display:flex;flex-direction:column;height:${totalH}px;justify-content:space-around;">`;
+    r.matches.forEach(m => {
+      bodyHtml += `<div style="display:flex;align-items:center;height:${slotH}px;">${card(m, r.type||'')}</div>`;
+    });
+    bodyHtml += `</div>`;
 
-function buildDateBar(stageId) {
-  const stageMates = MATCHES.filter(m => m.stage === stageId);
-  const dates = [...new Set(stageMates.map(m => m.date))].sort();
-  const today = todayET();
-  const bar = document.getElementById("dateBar");
-  bar.innerHTML = "";
-  dates.forEach(d => {
-    const dt = new Date(d + "T12:00:00");
-    const btn = document.createElement("button");
-    btn.className = "date-btn" + (d === today ? " today" : "");
-    btn.innerHTML = `<span class="day-num">${dt.getMonth()+1}/${dt.getDate()}</span><span class="day-name">週${DAYS_ZH[dt.getDay()]}</span>`;
-    btn.onclick = () => showDate(d, stageId);
-    btn.dataset.date = d;
-    bar.appendChild(btn);
+    if (ri < rounds.length - 1) {
+      const pairsCount = n / 2;
+      const pairSlotH = totalH / pairsCount;
+      const cardCenter = slotH / 2;
+      let lines = '';
+      for (let i = 0; i < pairsCount; i++) {
+        const topY = i * pairSlotH + cardCenter;
+        const botY = i * pairSlotH + slotH + cardCenter;
+        const midY = (topY + botY) / 2;
+        lines += `<line x1="0" y1="${topY}" x2="14" y2="${topY}" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.7"/>`;
+        lines += `<line x1="0" y1="${botY}" x2="14" y2="${botY}" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.7"/>`;
+        lines += `<line x1="14" y1="${topY}" x2="14" y2="${botY}" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.7"/>`;
+        lines += `<line x1="14" y1="${midY}" x2="28" y2="${midY}" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.7"/>`;
+      }
+      bodyHtml += `<svg width="28" height="${totalH}" style="flex-shrink:0;">${lines}</svg>`;
+    }
   });
-  // auto-select: today if in stage, else first upcoming, else first date
-  let target = dates[0];
-  if (dates.includes(today)) target = today;
-  else {
-    const upcoming = dates.find(d => d >= today);
-    if (upcoming) target = upcoming;
-  }
-  showDate(target, stageId);
+  bodyHtml += `</div>`;
+
+  container.innerHTML = `
+    <div style="overflow-x:auto;padding-bottom:8px;">
+      <div style="display:flex;margin-bottom:8px;">${labelsHtml}</div>
+      ${bodyHtml}
+    </div>
+    ${containerId==='r32'?'<p style="font-size:10px;color:#aaa;margin-top:12px;">※ 所有時間為美東時間（ET）· M81/M85 轉播 FS1</p>':''}
+  `;
 }
 
-function showDate(date, stageId) {
-  document.querySelectorAll(".date-btn").forEach(b =>
-    b.classList.toggle("active", b.dataset.date === date));
-  const matches = MATCHES.filter(m => m.stage === stageId && m.date === date);
-  const list = document.getElementById("matchList");
-  if (!matches.length) {
-    list.innerHTML = `<div class="no-matches">本日無賽事</div>`;
-    return;
-  }
-  list.innerHTML = matches.map(m => {
-    const homeZh = m.home.includes("勝者") || m.home.includes("敗者") || m.home.includes("組") || m.home.includes("佳") ? m.home : zh(m.home);
-    const awayZh = m.away.includes("勝者") || m.away.includes("敗者") || m.away.includes("組") || m.away.includes("佳") ? m.away : zh(m.away);
-    const lc = m.labelClass || "";
-    return `
-    <div class="match-row">
-      <div class="match-time">${m.time}</div>
-      <div class="match-teams">
-        <div class="teams">${homeZh} vs ${awayZh}</div>
-        <div class="meta">${vz(m.venue)}</div>
-      </div>
-      <div class="match-label ${lc}">${m.label}</div>
-      <div class="match-tv">
-        ${m.tv.map(t => `<span class="tv-badge tv-${t.replace(' ','')}">${t}</span>`).join("")}
-      </div>
-    </div>`;
-  }).join("");
-  const activeBtn = document.querySelector(`.date-btn[data-date="${date}"]`);
-  if (activeBtn) activeBtn.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+const r32=[M.M73,M.M74,M.M75,M.M76,M.M77,M.M78,M.M79,M.M80,M.M81,M.M82,M.M83,M.M84,M.M85,M.M86,M.M87,M.M88];
+const r16=[M.M89,M.M90,M.M91,M.M92,M.M93,M.M94,M.M95,M.M96];
+const qf=[M.M97,M.M98,M.M99,M.M100];
+const sf=[M.M101,M.M102];
+
+buildBracket('r32',[
+  {label:"32強 6/28–7/3",    matches:r32},
+  {label:"16強 7/4–7/7",     matches:r16},
+  {label:"8強 7/9–7/11",     matches:qf},
+  {label:"準決賽 7/14–7/15", matches:sf},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+]);
+buildBracket('r16',[
+  {label:"16強 7/4–7/7",     matches:r16},
+  {label:"8強 7/9–7/11",     matches:qf},
+  {label:"準決賽 7/14–7/15", matches:sf},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+]);
+buildBracket('qf',[
+  {label:"8強 7/9–7/11",     matches:qf},
+  {label:"準決賽 7/14–7/15", matches:sf},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+]);
+buildBracket('sf',[
+  {label:"準決賽 7/14–7/15", matches:sf},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+]);
+
+document.getElementById('final').innerHTML=`
+  <div style="max-width:420px;">
+    ${card(M.M104,'final')}
+    <div style="margin-top:16px;">
+      ${card(M.M103,'third')}
+    </div>
+  </div>
+  <p style="font-size:10px;color:#aaa;margin-top:12px;">※ 所有時間為美東時間（ET）</p>
+`;
+
+function show(id,el){
+  document.querySelectorAll('.round-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
 }
 
-// 用美東時間（ET, UTC-4夏令）取得今天日期
-function todayET() {
+function autoTab() {
   const now = new Date();
-  const etOffset = -4 * 60;
-  const etNow = new Date(now.getTime() + (etOffset - now.getTimezoneOffset()) * 60000);
-  return etNow.toISOString().slice(0,10);
+  const et = new Date(now.getTime() + (-4*60 - now.getTimezoneOffset()) * 60000);
+  const d = et.getFullYear()*10000 + (et.getMonth()+1)*100 + et.getDate();
+  let tabId;
+  if      (d >= 20260719) tabId = 'final';
+  else if (d >= 20260714) tabId = 'sf';
+  else if (d >= 20260709) tabId = 'qf';
+  else if (d >= 20260704) tabId = 'r16';
+  else                    tabId = 'r32';
+  const tab = document.querySelector(`.tab[onclick="show('${tabId}',this)"]`);
+  if (tab) show(tabId, tab);
 }
-
-// 自動偵測今天屬於哪個賽段
-function detectTodayStage() {
-  const today = todayET();
-  for (const s of STAGES) {
-    const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date);
-    if (dates.includes(today)) return s.id;
-  }
-  // 今天沒有比賽，找最近即將到來的賽段
-  for (const s of STAGES) {
-    const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date).sort();
-    if (dates.some(d => d >= today)) return s.id;
-  }
-  return "r32";
-}
-
-currentStage = detectTodayStage();
-buildStageTabs();
-buildDateBar(currentStage);
+autoTab();
 </script>
+<div class="page-footer">
+  <span>資料來源：FIFA／ESPN</span>
+  <span>所有時間為美東時間（ET）</span>
+</div>
 </body>
 </html>
