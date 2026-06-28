@@ -282,7 +282,7 @@ function buildStageTabs() {
   const bar = document.getElementById("stageTabs");
   STAGES.forEach(s => {
     const btn = document.createElement("button");
-    btn.className = "stage-tab" + (s.id === currentStage ? " active" : "");
+    btn.className = "stage-tab" + (s.id === currentStage ? " active" : ""); // currentStage already set
     btn.textContent = s.label;
     btn.dataset.stage = s.id;
     btn.onclick = () => switchStage(s.id);
@@ -352,8 +352,25 @@ function showDate(date, stageId) {
   if (activeBtn) activeBtn.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
 }
 
+// 自動偵測今天屬於哪個賽段
+function detectTodayStage() {
+  const today = new Date().toISOString().slice(0,10);
+  // 從後往前找，找到今天有比賽的最早賽段
+  for (const s of STAGES) {
+    const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date);
+    if (dates.includes(today)) return s.id;
+  }
+  // 今天沒有比賽，找最近即將到來的賽段
+  for (const s of STAGES) {
+    const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date).sort();
+    if (dates.some(d => d >= today)) return s.id;
+  }
+  return "group";
+}
+
+currentStage = detectTodayStage();
 buildStageTabs();
-buildDateBar("group");
+buildDateBar(currentStage);
 </script>
 </body>
 </html>
