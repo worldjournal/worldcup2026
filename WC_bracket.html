@@ -167,11 +167,11 @@ const WINNER_MAP_R32 = [
   ['M85','M96','a'], ['M86','M96','b'],
 ];
 
-// 16強→8強 對應表
+// 16強→8強 對應表（依ESPN bracket順序：M89,M90,M93,M94,M91,M92,M95,M96）
 const WINNER_MAP_R16 = [
   ['M89','M97','a'], ['M90','M97','b'],
-  ['M91','M98','a'], ['M92','M98','b'],
-  ['M93','M99','a'], ['M94','M99','b'],
+  ['M93','M98','a'], ['M94','M98','b'],
+  ['M91','M99','a'], ['M92','M99','b'],
   ['M95','M100','a'],['M96','M100','b'],
 ];
 
@@ -285,7 +285,7 @@ function buildBracket(containerId, rounds) {
 }
 
 const r32=[M.M74,M.M75,M.M73,M.M76,M.M83,M.M84,M.M82,M.M81,M.M77,M.M78,M.M79,M.M80,M.M87,M.M88,M.M85,M.M86];
-const r16=[M.M89,M.M90,M.M91,M.M92,M.M93,M.M94,M.M95,M.M96];
+const r16=[M.M89,M.M90,M.M93,M.M94,M.M91,M.M92,M.M95,M.M96];
 const qf=[M.M97,M.M98,M.M99,M.M100];
 const sf=[M.M101,M.M102];
 
