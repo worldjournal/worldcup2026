@@ -62,84 +62,56 @@ body { font-family:'Noto Sans TC',sans-serif; background:#f8f7f3; color:#222; }
   <div class="round-panel" id="final"></div>
 </div>
 <script>
-// ============================================================
-// 依照 ESPN bracket 順序排列（M73–M88）
-// tv: 轉播台
-// ============================================================
 const M = {
   // ── 32強 (6/28–7/3) ──────────────────────────────────────
-  // 6/28 下午3時 洛杉磯
   M73:{date:"6/28",time:"下午3時ET",venue:"洛杉磯",tv:"FOX/Tele",
     a:{n:"南非",s:"0"},b:{n:"加拿大",s:"1"}},
-  // 6/29 下午4時30 波士頓
   M74:{date:"6/29",time:"下午4時30分ET",venue:"波士頓",tv:"FOX/Tele",
     a:{n:"德國",s:"1(3)"},b:{n:"巴拉圭",s:"1(4)"}},
-  // 6/30 下午5時 紐約/新澤西
   M75:{date:"6/30",time:"下午5時ET",venue:"紐約/新澤西",tv:"FOX/Tele",
     a:{n:"法國",s:""},b:{n:"瑞典",s:""}},
-  // 6/29 晚上9時 蒙特雷
   M76:{date:"6/29",time:"晚上9時ET",venue:"蒙特雷",tv:"FOX/Tele",
     a:{n:"荷蘭",s:"1(2)"},b:{n:"摩洛哥",s:"1(3)"}},
-  // 6/29 下午1時 休士頓
   M77:{date:"6/29",time:"下午1時ET",venue:"休士頓",tv:"FOX/Tele",
     a:{n:"巴西",s:"2"},b:{n:"日本",s:"1"}},
-  // 6/30 下午1時 達拉斯
   M78:{date:"6/30",time:"下午1時ET",venue:"達拉斯",tv:"FOX/Tele",
     a:{n:"象牙海岸",s:"1"},b:{n:"挪威",s:"2"}},
-  // 6/30 晚上9時 墨西哥城
   M79:{date:"6/30",time:"晚上9時ET",venue:"墨西哥城",tv:"FOX/Tele",
     a:{n:"墨西哥",s:""},b:{n:"厄瓜多",s:""}},
-  // 7/1 中午12時 亞特蘭大
   M80:{date:"7/1",time:"中午12時ET",venue:"亞特蘭大",tv:"FOX/Tele",
     a:{n:"英格蘭",s:""},b:{n:"民主剛果",s:""}},
-  // 7/1 下午4時 西雅圖  ← FS1
   M81:{date:"7/1",time:"下午4時ET",venue:"西雅圖",tv:"FS1/Tele",
     a:{n:"比利時",s:""},b:{n:"塞內加爾",s:""}},
-  // 7/1 晚上8時 舊金山灣區
   M82:{date:"7/1",time:"晚上8時ET",venue:"舊金山灣區",tv:"FOX/Tele",
     a:{n:"美國",s:""},b:{n:"波赫",s:""}},
-  // 7/2 晚上7時 多倫多
   M83:{date:"7/2",time:"晚上7時ET",venue:"多倫多",tv:"FOX/Tele",
     a:{n:"葡萄牙",s:""},b:{n:"克羅埃西亞",s:""}},
-  // 7/2 下午3時 洛杉磯
   M84:{date:"7/2",time:"下午3時ET",venue:"洛杉磯",tv:"FOX/Tele",
     a:{n:"西班牙",s:""},b:{n:"奧地利",s:""}},
-  // 7/2 晚上11時 溫哥華  ← FS1
   M85:{date:"7/2",time:"晚上11時ET",venue:"溫哥華",tv:"FS1/Tele",
     a:{n:"瑞士",s:""},b:{n:"阿爾及利亞",s:""}},
-  // 7/3 晚上9時30 堪薩斯城
   M86:{date:"7/3",time:"晚上9時30分ET",venue:"堪薩斯城",tv:"FOX/Tele",
     a:{n:"哥倫比亞",s:""},b:{n:"迦納",s:""}},
-  // 7/3 下午6時 邁阿密
   M87:{date:"7/3",time:"下午6時ET",venue:"邁阿密",tv:"FOX/Tele",
     a:{n:"阿根廷",s:""},b:{n:"維德角",s:""}},
-  // 7/3 下午2時 達拉斯
   M88:{date:"7/3",time:"下午2時ET",venue:"達拉斯",tv:"FOX/Tele",
     a:{n:"澳洲",s:""},b:{n:"埃及",s:""}},
 
   // ── 16強 (7/4–7/7) ──────────────────────────────────────
-  // M89: 7/4 下午5時 費城
   M89:{date:"7/4",time:"下午5時ET",venue:"費城",tv:"FOX/Tele",
-    a:{n:"巴拉圭",s:""},b:{n:"待定",s:""}},
-  // M90: 7/4 下午1時 休士頓
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
   M90:{date:"7/4",time:"下午1時ET",venue:"休士頓",tv:"FOX/Tele",
-    a:{n:"加拿大",s:""},b:{n:"摩洛哥",s:""}},
-  // M91: 7/5 下午4時 紐約/新澤西
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
   M91:{date:"7/5",time:"下午4時ET",venue:"紐約/新澤西",tv:"FOX/Tele",
     a:{n:"待定",s:""},b:{n:"待定",s:""}},
-  // M92: 7/5 晚上8時 墨西哥城
   M92:{date:"7/5",time:"晚上8時ET",venue:"墨西哥城",tv:"FOX/Tele",
     a:{n:"待定",s:""},b:{n:"待定",s:""}},
-  // M93: 7/6 下午3時 達拉斯
   M93:{date:"7/6",time:"下午3時ET",venue:"達拉斯",tv:"FOX/Tele",
-    a:{n:"巴西",s:""},b:{n:"待定",s:""}},
-  // M94: 7/6 晚上8時 西雅圖
+    a:{n:"待定",s:""},b:{n:"待定",s:""}},
   M94:{date:"7/6",time:"晚上8時ET",venue:"西雅圖",tv:"FOX/Tele",
     a:{n:"待定",s:""},b:{n:"待定",s:""}},
-  // M95: 7/7 中午12時 亞特蘭大
   M95:{date:"7/7",time:"中午12時ET",venue:"亞特蘭大",tv:"FOX/Tele",
     a:{n:"待定",s:""},b:{n:"待定",s:""}},
-  // M96: 7/7 下午4時 溫哥華
   M96:{date:"7/7",time:"下午4時ET",venue:"溫哥華",tv:"FOX/Tele",
     a:{n:"待定",s:""},b:{n:"待定",s:""}},
 
@@ -166,6 +138,66 @@ const M = {
     a:{n:"準決賽勝者",s:""},b:{n:"準決賽勝者",s:""}},
 };
 
+// ── 自動判斷勝者並填入下一輪 ──────────────────────────────
+// 比分格式支援：普通 "2"、點球 "1(4)"
+function getWinner(match) {
+  if (match.a.s === '' || match.b.s === '') return null;
+  // 取括號內點球數，若有的話
+  const parse = s => {
+    const m = s.match(/\((\d+)\)/);
+    return m ? parseInt(m[1]) : parseInt(s);
+  };
+  const sa = parse(match.a.s);
+  const sb = parse(match.b.s);
+  if (isNaN(sa) || isNaN(sb)) return null;
+  if (sa > sb) return match.a.n;
+  if (sb > sa) return match.b.n;
+  return null;
+}
+
+// 32強→16強 對應表：[32強場次, 16強場次, 位置]
+const WINNER_MAP_R32 = [
+  ['M74','M89','a'], ['M75','M89','b'],
+  ['M73','M90','a'], ['M76','M90','b'],
+  ['M83','M91','a'], ['M84','M91','b'],
+  ['M82','M92','a'], ['M81','M92','b'],
+  ['M77','M93','a'], ['M78','M93','b'],
+  ['M79','M94','a'], ['M80','M94','b'],
+  ['M87','M95','a'], ['M88','M95','b'],
+  ['M85','M96','a'], ['M86','M96','b'],
+];
+
+// 16強→8強 對應表
+const WINNER_MAP_R16 = [
+  ['M89','M97','a'], ['M90','M97','b'],
+  ['M91','M98','a'], ['M92','M98','b'],
+  ['M93','M99','a'], ['M94','M99','b'],
+  ['M95','M100','a'],['M96','M100','b'],
+];
+
+// 8強→準決賽 對應表
+const WINNER_MAP_QF = [
+  ['M97','M101','a'],['M98','M101','b'],
+  ['M99','M102','a'],['M100','M102','b'],
+];
+
+// 準決賽→決賽/季軍賽
+const WINNER_MAP_SF = [
+  ['M101','M104','a'],['M102','M104','b'],
+];
+
+function applyWinners(map) {
+  map.forEach(([src, dst, pos]) => {
+    const winner = getWinner(M[src]);
+    if (winner) M[dst][pos].n = winner;
+  });
+}
+
+applyWinners(WINNER_MAP_R32);
+applyWinners(WINNER_MAP_R16);
+applyWinners(WINNER_MAP_QF);
+applyWinners(WINNER_MAP_SF);
+
 const FLAG_CODES = {
   "捷克":"CZ","南韓":"KR","墨西哥":"MX","南非":"ZA",
   "波赫":"BA","加拿大":"CA","卡達":"QA","瑞士":"CH",
@@ -189,8 +221,8 @@ function flagImg(name) {
 function card(m, type) {
   const isFinal = type==='final', isThird = type==='third';
   const cls = isFinal?'match final-card':isThird?'match third-card':'match';
-  const at = m.a.n.includes("待定")||m.a.n.includes("組")||m.a.n.includes("最佳")||m.a.n.includes("敗者")||m.a.n.includes("勝者");
-  const bt = m.b.n.includes("待定")||m.b.n.includes("組")||m.b.n.includes("最佳")||m.b.n.includes("敗者")||m.b.n.includes("勝者");
+  const at = m.a.n.includes("待定")||m.a.n.includes("敗者")||m.a.n.includes("勝者");
+  const bt = m.b.n.includes("待定")||m.b.n.includes("敗者")||m.b.n.includes("勝者");
   const title = isFinal?'🏆 2026 FIFA 世界盃 決賽':isThird?'🥉 季軍賽':'';
   const sub = isFinal||isThird ? `<div class="match-sub">${m.venue}</div>` : '';
   const titleHtml = title ? `<div class="match-title">${title}</div>${sub}` : '';
@@ -211,13 +243,11 @@ function buildBracket(containerId, rounds) {
   const n0 = rounds[0].matches.length;
   const GAP_H = n0 >= 16 ? 28 : 12;
   const totalH = n0 * CARD_H + (n0 - 1) * GAP_H;
-
   let labelsHtml = '';
   rounds.forEach((r, i) => {
     labelsHtml += `<div style="width:185px;flex-shrink:0;font-size:10px;font-weight:700;color:#888;text-align:center;letter-spacing:1px;padding-bottom:8px;">${r.label}</div>`;
     if (i < rounds.length - 1) labelsHtml += `<div style="width:28px;flex-shrink:0;"></div>`;
   });
-
   let bodyHtml = `<div style="display:flex;align-items:flex-start;">`;
   rounds.forEach((r, ri) => {
     const n = r.matches.length;
@@ -227,7 +257,6 @@ function buildBracket(containerId, rounds) {
       bodyHtml += `<div style="display:flex;align-items:center;height:${slotH}px;">${card(m, r.type||'')}</div>`;
     });
     bodyHtml += `</div>`;
-
     if (ri < rounds.length - 1) {
       const pairsCount = n / 2;
       const pairSlotH = totalH / pairsCount;
@@ -246,7 +275,6 @@ function buildBracket(containerId, rounds) {
     }
   });
   bodyHtml += `</div>`;
-
   container.innerHTML = `
     <div style="overflow-x:auto;padding-bottom:8px;">
       <div style="display:flex;margin-bottom:8px;">${labelsHtml}</div>
