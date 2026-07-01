@@ -63,7 +63,7 @@
       <span class="gb-boot">👟</span>
       <div>
         <div class="gb-title">2026 FIFA 世界盃 — 金靴獎排行</div>
-        <div class="gb-subtitle">Golden Boot · 進球數排行</div>
+        <div class="gb-subtitle">Golden Boot · 進球數排行（前5名）</div>
       </div>
     </div>
     <div class="gb-updated" id="lastUpdated">載入中…</div>
@@ -73,7 +73,7 @@
     <div class="gb-state"><div class="gb-spinner"></div><span>資料載入中…</span></div>
   </div>
 
-  <div class="gb-note">⚽ 金靴獎以進球數決定，同球數者以助攻數、上場分鐘數依序比較。</div>
+  <div class="gb-note">⚽ 金靴獎以進球數決定，同球數者以助攻數、上場分鐘數依序比較。僅顯示前五名。</div>
   <div class="gb-footer">
     <span>資料來源：FIFA</span>
     <span id="footerNote"></span>
@@ -125,7 +125,7 @@ async function fetchData() {
 function render(players) {
   const hasStarted = players.some(p => p.goals > 0);
 
-  // ── 標準競賽排名：同分同名，下一名跳過 ──
+  // ── 標準競賽排名：同分同名，下一名跳過（先對全部球員排名，再取前五名）──
   let rank = 1;
   const ranked = players.map((p, i) => {
     if (i > 0 && p.goals < players[i - 1].goals) {
@@ -134,7 +134,10 @@ function render(players) {
     return { ...p, rank };
   });
 
-  const rows = ranked.map(p => {
+  // 只取名次前五名（同分並列者一併列出，可能超過5列）
+  const top5 = ranked.filter(p => p.rank <= 5);
+
+  const rows = top5.map(p => {
     const rankClass = (hasStarted && p.rank === 1) ? "rank-1" : (hasStarted && p.rank === 2) ? "rank-2" : (hasStarted && p.rank === 3) ? "rank-3" : "rank-other";
     const rankIcon = (hasStarted && p.rank === 1) ? "🥇" : (hasStarted && p.rank === 2) ? "🥈" : (hasStarted && p.rank === 3) ? "🥉" : p.rank;
     const goalsClass = (hasStarted && p.rank === 1) ? "goals-1" : (hasStarted && p.rank === 2) ? "goals-2" : (hasStarted && p.rank === 3) ? "goals-3" : "goals-other";
