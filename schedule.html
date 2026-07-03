@@ -115,6 +115,7 @@ const VENUE_ZH = {
   "New York/New Jersey":"紐約/新澤西","Boston":"波士頓","Vancouver":"溫哥華",
   "Houston":"休士頓","Dallas":"達拉斯","Philadelphia":"費城","Monterrey":"蒙特雷",
   "Atlanta":"亞特蘭大","Seattle":"西雅圖","Miami":"邁阿密","Kansas City":"堪薩斯城",
+  "Arlington":"阿靈頓",
 };
 const vz = v => VENUE_ZH[v] || v;
 
@@ -215,22 +216,16 @@ const MATCHES = [
   {stage:"r32",date:"2026-07-03",time:"9:30 PM",home:"哥倫比亞",away:"迦納",label:"32強",labelClass:"knockout",venue:"Kansas City",tv:["FOX","Telemundo"]},
 
   // ── 16強賽 (Round of 16) M89–M96 ──
-  // M90: Winner M73 vs Winner M75
-  {stage:"r16",date:"2026-07-04",time:"1:00 PM",home:"M73勝者",away:"M75勝者",label:"16強",labelClass:"r16",matchId:"M90",venue:"Houston",tv:["FOX","Telemundo"]},
-  // M89: Winner M74 vs Winner M77
-  {stage:"r16",date:"2026-07-04",time:"5:00 PM",home:"M74勝者",away:"M77勝者",label:"16強",labelClass:"r16",matchId:"M89",venue:"Philadelphia",tv:["FOX","Telemundo"]},
-  // M91: Winner M76 vs Winner M78
-  {stage:"r16",date:"2026-07-05",time:"4:00 PM",home:"M76勝者",away:"M78勝者",label:"16強",labelClass:"r16",matchId:"M91",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
-  // M92: Winner M79 vs Winner M80
-  {stage:"r16",date:"2026-07-05",time:"8:00 PM",home:"M79勝者",away:"M80勝者",label:"16強",labelClass:"r16",matchId:"M92",venue:"Mexico City",tv:["FOX","Telemundo"]},
-  // M93: Winner M83 vs Winner M84
-  {stage:"r16",date:"2026-07-06",time:"3:00 PM",home:"M83勝者",away:"M84勝者",label:"16強",labelClass:"r16",matchId:"M93",venue:"Dallas",tv:["FOX","Telemundo"]},
-  // M94: Winner M81 vs Winner M82
-  {stage:"r16",date:"2026-07-06",time:"8:00 PM",home:"M81勝者",away:"M82勝者",label:"16強",labelClass:"r16",matchId:"M94",venue:"Seattle",tv:["FOX","Telemundo"]},
-  // M95: Winner M86 vs Winner M88
-  {stage:"r16",date:"2026-07-07",time:"12:00 PM",home:"M86勝者",away:"M88勝者",label:"16強",labelClass:"r16",matchId:"M95",venue:"Atlanta",tv:["FOX","Telemundo"]},
-  // M96: Winner M85 vs Winner M87
-  {stage:"r16",date:"2026-07-07",time:"4:00 PM",home:"M85勝者",away:"M87勝者",label:"16強",labelClass:"r16",matchId:"M96",venue:"Vancouver",tv:["FOX","Telemundo"]},
+  // 已確定對戰（截至7/2查證）
+  {stage:"r16",date:"2026-07-04",time:"1:00 PM",home:"加拿大",away:"摩洛哥",label:"16強",labelClass:"r16",matchId:"M90",venue:"Houston",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-04",time:"5:00 PM",home:"巴拉圭",away:"法國",label:"16強",labelClass:"r16",matchId:"M89",venue:"Philadelphia",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-05",time:"4:00 PM",home:"巴西",away:"挪威",label:"16強",labelClass:"r16",matchId:"M91",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-05",time:"8:00 PM",home:"墨西哥",away:"英格蘭",label:"16強",labelClass:"r16",matchId:"M92",venue:"Mexico City",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-06",time:"3:00 PM",home:"西班牙",away:"葡萄牙",label:"16強",labelClass:"r16",matchId:"M93",venue:"Arlington",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-06",time:"8:00 PM",home:"比利時",away:"美國",label:"16強",labelClass:"r16",matchId:"M94",venue:"Seattle",tv:["FOX","Telemundo"]},
+  // 尚未確定（等待7/3的32強賽果）
+  {stage:"r16",date:"2026-07-07",time:"12:00 PM",home:"澳洲/埃及 勝者",away:"阿根廷/維德角 勝者",label:"16強",labelClass:"r16",matchId:"M95",venue:"Atlanta",tv:["FOX","Telemundo"]},
+  {stage:"r16",date:"2026-07-07",time:"4:00 PM",home:"瑞士/阿爾及利亞 勝者",away:"哥倫比亞/迦納 勝者",label:"16強",labelClass:"r16",matchId:"M96",venue:"Vancouver",tv:["FOX","Telemundo"]},
 
   // ── 八強 (Quarterfinals) M97–M100 ──
   {stage:"qf",date:"2026-07-09",time:"4:00 PM",home:"M89勝者",away:"M90勝者",label:"八強",labelClass:"r16",matchId:"M97",venue:"Boston",tv:["FOX","Telemundo"]},
@@ -252,6 +247,7 @@ const MATCHES = [
 const STAGES = [
   {id:"group", label:"小組賽"},
   {id:"r32",   label:"32強"},
+  {id:"r16",   label:"16強"},
 ];
 
 const DAYS_ZH = ["日","一","二","三","四","五","六"];
