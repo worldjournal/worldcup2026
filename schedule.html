@@ -21,7 +21,6 @@
   .wc-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700; letter-spacing: .04em; }
   .wc-subtitle { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; }
 
-  /* Stage tabs */
   .stage-tabs { display: flex; background: #111827; border-bottom: 2px solid var(--red); }
   .stage-tab { flex: 1; padding: 8px 4px; cursor: pointer; border: none; background: none;
     color: rgba(255,255,255,.45); font-family: inherit; font-size: 11px; font-weight: 700;
@@ -119,11 +118,7 @@ const VENUE_ZH = {
 };
 const vz = v => VENUE_ZH[v] || v;
 
-// stage: "group" | "r32" | "r16" | "qf" | "sf" | "final"
-// label: shown in match row (組別 or 賽事名稱)
-// labelClass: "" | "knockout" | "r16"
 const MATCHES = [
-  // ── 小組賽 ──
   {stage:"group",date:"2026-06-11",time:"3:00 PM",home:"Mexico",away:"South Africa",label:"A組",venue:"Mexico City",tv:["FOX","Telemundo"]},
   {stage:"group",date:"2026-06-11",time:"10:00 PM",home:"South Korea",away:"Czechia",label:"A組",venue:"Guadalajara",tv:["FS1","Telemundo"]},
   {stage:"group",date:"2026-06-12",time:"3:00 PM",home:"Canada",away:"Bosnia and Herzegovina",label:"B組",venue:"Toronto",tv:["FOX","Telemundo"]},
@@ -197,7 +192,6 @@ const MATCHES = [
   {stage:"group",date:"2026-06-27",time:"10:00 PM",home:"Jordan",away:"Argentina",label:"J組",venue:"Dallas",tv:["FOX","Telemundo"]},
   {stage:"group",date:"2026-06-27",time:"10:00 PM",home:"Algeria",away:"Austria",label:"J組",venue:"Kansas City",tv:["FS1","Telemundo"]},
 
-  // ── 32強賽 (Round of 32) M73–M88 ──
   {stage:"r32",date:"2026-06-28",time:"3:00 PM",home:"南非",away:"加拿大",label:"32強",labelClass:"knockout",venue:"Los Angeles",tv:["FOX","Telemundo"]},
   {stage:"r32",date:"2026-06-29",time:"1:00 PM",home:"巴西",away:"日本",label:"32強",labelClass:"knockout",venue:"Houston",tv:["FOX","Telemundo"]},
   {stage:"r32",date:"2026-06-29",time:"4:30 PM",home:"德國",away:"巴拉圭",label:"32強",labelClass:"knockout",venue:"Boston",tv:["FOX","Telemundo"]},
@@ -215,32 +209,25 @@ const MATCHES = [
   {stage:"r32",date:"2026-07-03",time:"6:00 PM",home:"阿根廷",away:"維德角",label:"32強",labelClass:"knockout",venue:"Miami",tv:["FOX","Telemundo"]},
   {stage:"r32",date:"2026-07-03",time:"9:30 PM",home:"哥倫比亞",away:"迦納",label:"32強",labelClass:"knockout",venue:"Kansas City",tv:["FOX","Telemundo"]},
 
-  // ── 16強賽 (Round of 16) M89–M96 ──
-  // 已確定對戰（截至7/2查證）
   {stage:"r16",date:"2026-07-04",time:"1:00 PM",home:"加拿大",away:"摩洛哥",label:"16強",labelClass:"r16",matchId:"M90",venue:"Houston",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-04",time:"5:00 PM",home:"巴拉圭",away:"法國",label:"16強",labelClass:"r16",matchId:"M89",venue:"Philadelphia",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-05",time:"4:00 PM",home:"巴西",away:"挪威",label:"16強",labelClass:"r16",matchId:"M91",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-05",time:"8:00 PM",home:"墨西哥",away:"英格蘭",label:"16強",labelClass:"r16",matchId:"M92",venue:"Mexico City",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-06",time:"3:00 PM",home:"葡萄牙",away:"西班牙",label:"16強",labelClass:"r16",matchId:"M93",venue:"Arlington",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-06",time:"8:00 PM",home:"美國",away:"比利時",label:"16強",labelClass:"r16",matchId:"M94",venue:"Seattle",tv:["FOX","Telemundo"]},
-  // 尚未確定（等待7/3的32強賽果）
   {stage:"r16",date:"2026-07-07",time:"12:00 PM",home:"埃及",away:"阿根廷",label:"16強",labelClass:"r16",matchId:"M95",venue:"Atlanta",tv:["FOX","Telemundo"]},
   {stage:"r16",date:"2026-07-07",time:"4:00 PM",home:"瑞士",away:"哥倫比亞",label:"16強",labelClass:"r16",matchId:"M96",venue:"Vancouver",tv:["FOX","Telemundo"]},
 
-  // ── 8強 (Quarterfinals) M97–M100 ──
   {stage:"qf",date:"2026-07-09",time:"4:00 PM",home:"法國",away:"摩洛哥",label:"8強",labelClass:"r16",matchId:"M97",venue:"Boston",tv:["FOX","Telemundo"]},
-  {stage:"qf",date:"2026-07-10",time:"3:00 PM",home:"西班牙",away:"美國/比利時 勝者",label:"8強",labelClass:"r16",matchId:"M98",venue:"Los Angeles",tv:["FOX","Telemundo"]},
+  {stage:"qf",date:"2026-07-10",time:"3:00 PM",home:"西班牙",away:"比利時",label:"8強",labelClass:"r16",matchId:"M98",venue:"Los Angeles",tv:["FOX","Telemundo"]},
   {stage:"qf",date:"2026-07-11",time:"5:00 PM",home:"挪威",away:"英格蘭",label:"8強",labelClass:"r16",matchId:"M99",venue:"Miami",tv:["FOX","Telemundo"]},
-  {stage:"qf",date:"2026-07-11",time:"9:00 PM",home:"阿根廷/埃及 勝者",away:"瑞士/哥倫比亞 勝者",label:"8強",labelClass:"r16",matchId:"M100",venue:"Kansas City",tv:["FOX","Telemundo"]},
+  {stage:"qf",date:"2026-07-11",time:"9:00 PM",home:"阿根廷",away:"瑞士",label:"8強",labelClass:"r16",matchId:"M100",venue:"Kansas City",tv:["FOX","Telemundo"]},
 
-  // ── 四強 (Semifinals) M101–M102 ──
   {stage:"sf",date:"2026-07-14",time:"3:00 PM",home:"M97勝者",away:"M98勝者",label:"四強",labelClass:"r16",matchId:"M101",venue:"Dallas",tv:["FOX","Telemundo"]},
   {stage:"sf",date:"2026-07-15",time:"3:00 PM",home:"M99勝者",away:"M100勝者",label:"四強",labelClass:"r16",matchId:"M102",venue:"Atlanta",tv:["FOX","Telemundo"]},
 
-  // ── 季軍賽 M103 ──
   {stage:"final",date:"2026-07-18",time:"5:00 PM",home:"M101敗者",away:"M102敗者",label:"季軍賽",labelClass:"r16",matchId:"M103",venue:"Miami",tv:["FOX","Telemundo"]},
 
-  // ── 決賽 M104 ──
   {stage:"final",date:"2026-07-19",time:"3:00 PM",home:"M101勝者",away:"M102勝者",label:"決賽",labelClass:"r16",matchId:"M104",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
 ];
 
@@ -259,7 +246,7 @@ function buildStageTabs() {
   const bar = document.getElementById("stageTabs");
   STAGES.forEach(s => {
     const btn = document.createElement("button");
-    btn.className = "stage-tab" + (s.id === currentStage ? " active" : ""); // currentStage already set
+    btn.className = "stage-tab" + (s.id === currentStage ? " active" : "");
     btn.textContent = s.label;
     btn.dataset.stage = s.id;
     btn.onclick = () => switchStage(s.id);
@@ -289,7 +276,6 @@ function buildDateBar(stageId) {
     btn.dataset.date = d;
     bar.appendChild(btn);
   });
-  // auto-select: today if in stage, else first upcoming, else first date
   let target = dates[0];
   if (dates.includes(today)) target = today;
   else {
@@ -329,7 +315,6 @@ function showDate(date, stageId) {
   if (activeBtn) activeBtn.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
 }
 
-// 用美東時間（ET, UTC-4夏令）取得今天日期
 function todayET() {
   const now = new Date();
   const etOffset = -4 * 60;
@@ -337,14 +322,12 @@ function todayET() {
   return etNow.toISOString().slice(0,10);
 }
 
-// 自動偵測今天屬於哪個賽段
 function detectTodayStage() {
   const today = todayET();
   for (const s of STAGES) {
     const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date);
     if (dates.includes(today)) return s.id;
   }
-  // 今天沒有比賽，找最近即將到來的賽段
   for (const s of STAGES) {
     const dates = MATCHES.filter(m => m.stage === s.id).map(m => m.date).sort();
     if (dates.some(d => d >= today)) return s.id;
