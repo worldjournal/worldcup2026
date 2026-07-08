@@ -22,19 +22,53 @@ body { font-family:'Noto Sans TC',sans-serif; background:#f8f7f3; color:#222; }
 .bracket-wrap { overflow-x:auto; padding:20px; }
 .round-panel { display:none; }
 .round-panel.active { display:block; }
-.match { background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden; width:225px; box-shadow:0 1px 4px rgba(0,0,0,0.08); flex-shrink:0; }
+.match { background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden; width:185px; box-shadow:0 1px 4px rgba(0,0,0,0.08); flex-shrink:0; }
 .match.final-card { border:2px solid #c8a84b; }
 .match.third-card { border:1px solid #bbb; background:#fafafa; }
-.match-title { font-size:14px; font-weight:700; color:#333; padding:7px 10px 3px; text-align:center; border-bottom:1px solid #f0f0f0; }
+.match-title { font-size:11px; font-weight:700; color:#333; padding:5px 8px 2px; text-align:center; border-bottom:1px solid #f0f0f0; }
 .match.final-card .match-title { color:#c8a84b; }
-.match-sub { font-size:11px; color:#999; padding:0 10px 5px; text-align:center; border-bottom:1px solid #f0f0f0; }
-.team { display:flex; align-items:center; padding:7px 10px; gap:8px; border-bottom:1px solid #f0f0f0; }
+.match-sub { font-size:9px; color:#999; padding:0 8px 4px; text-align:center; border-bottom:1px solid #f0f0f0; }
+.team { display:flex; align-items:center; padding:5px 8px; gap:6px; border-bottom:1px solid #f0f0f0; }
 .team:last-of-type { border-bottom:none; }
-.flag { font-size:14px; width:22px; text-align:center; flex-shrink:0; }
-.tname { font-size:13px; font-weight:500; color:#222; flex:1; line-height:1.3; }
+.flag { font-size:12px; width:18px; text-align:center; flex-shrink:0; }
+.tname { font-size:10px; font-weight:500; color:#222; flex:1; line-height:1.3; }
 .tname.tbd { color:#bbb; font-style:italic; font-weight:400; }
-.tscore { font-size:14px; font-weight:700; color:#333; min-width:26px; text-align:center; background:#f0f0f0; border-radius:3px; padding:2px 5px; }
-.match-foot { font-size:10px; color:#aaa; padding:4px 10px; background:#fafafa; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between; }
+.tscore { font-size:12px; font-weight:700; color:#333; min-width:22px; text-align:center; background:#f0f0f0; border-radius:3px; padding:1px 4px; }
+.match-foot { font-size:8px; color:#aaa; padding:3px 8px; background:#fafafa; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between; }
+
+/* 只有「8強」分頁（含8強／準決賽／決賽欄）字體放大，32強／16強分頁維持原尺寸 */
+/* 8強卡片尺寸 */
+.match.tier-qf { width:260px; }
+.match.tier-qf .match-title { font-size:17px; padding:9px 12px 4px; }
+.match.tier-qf .match-sub { font-size:13px; padding:0 12px 6px; }
+.match.tier-qf .team { padding:9px 12px; gap:10px; }
+.match.tier-qf .flag { font-size:17px; width:26px; }
+.match.tier-qf .flag img { width:28px; height:20px; }
+.match.tier-qf .tname { font-size:16px; }
+.match.tier-qf .tscore { font-size:17px; min-width:30px; padding:2px 6px; }
+.match.tier-qf .match-foot { font-size:12px; padding:5px 12px; }
+
+/* 準決賽卡片尺寸 — 比8強更大 */
+.match.tier-sf { width:300px; }
+.match.tier-sf .match-title { font-size:20px; padding:11px 14px 5px; }
+.match.tier-sf .match-sub { font-size:15px; padding:0 14px 7px; }
+.match.tier-sf .team { padding:11px 14px; gap:12px; }
+.match.tier-sf .flag { font-size:20px; width:30px; }
+.match.tier-sf .flag img { width:32px; height:23px; }
+.match.tier-sf .tname { font-size:19px; }
+.match.tier-sf .tscore { font-size:20px; min-width:34px; padding:3px 7px; }
+.match.tier-sf .match-foot { font-size:14px; padding:6px 14px; }
+
+/* 決賽卡片尺寸 — 最大 */
+.match.tier-final { width:340px; }
+.match.tier-final .match-title { font-size:23px; padding:13px 16px 6px; }
+.match.tier-final .match-sub { font-size:17px; padding:0 16px 8px; }
+.match.tier-final .team { padding:13px 16px; gap:14px; }
+.match.tier-final .flag { font-size:23px; width:34px; }
+.match.tier-final .flag img { width:38px; height:27px; }
+.match.tier-final .tname { font-size:22px; }
+.match.tier-final .tscore { font-size:23px; min-width:38px; padding:4px 8px; }
+.match.tier-final .match-foot { font-size:16px; padding:7px 16px; }
 </style>
 </head>
 <body>
@@ -203,12 +237,12 @@ const FLAG_CODES = {
 function flagImg(name) {
   const code = FLAG_CODES[name];
   if (!code) return `<span style="font-size:12px;color:#ccc;">🏳</span>`;
-  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg" width="24" height="17" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
+  return `<img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${code}.svg" width="20" height="14" alt="${name}" style="border-radius:2px;vertical-align:middle;display:inline-block;">`;
 }
 
-function card(m, type) {
+function card(m, type, tier) {
   const isFinal = type==='final', isThird = type==='third';
-  const cls = isFinal?'match final-card':isThird?'match third-card':'match';
+  const cls = (isFinal?'match final-card':isThird?'match third-card':'match') + (tier?` tier-${tier}`:'');
   const at = m.a.n.includes("待定")||m.a.n.includes("敗者")||m.a.n.includes("勝者");
   const bt = m.b.n.includes("待定")||m.b.n.includes("敗者")||m.b.n.includes("勝者");
   const title = isFinal?'🏆 2026 FIFA 世界盃 決賽':isThird?'🥉 季軍賽':'';
@@ -225,24 +259,29 @@ function card(m, type) {
   </div>`;
 }
 
+const TIER_W = { qf:260, sf:300, final:340 };
+const TIER_H = { qf:130, sf:150, final:170 };
+
 function buildBracket(containerId, rounds) {
-  const CARD_H = 112;
+  const CARD_H = TIER_H[rounds[0].tier] || 96;
   const container = document.getElementById(containerId);
   const n0 = rounds[0].matches.length;
   const GAP_H = n0 >= 16 ? 28 : 12;
   const totalH = n0 * CARD_H + (n0 - 1) * GAP_H;
   let labelsHtml = '';
   rounds.forEach((r, i) => {
-    labelsHtml += `<div style="width:225px;flex-shrink:0;font-size:12px;font-weight:700;color:#888;text-align:center;letter-spacing:1px;padding-bottom:8px;">${r.label}</div>`;
+    const colW = TIER_W[r.tier] || 185;
+    labelsHtml += `<div style="width:${colW}px;flex-shrink:0;font-size:${r.tier?12:10}px;font-weight:700;color:#888;text-align:center;letter-spacing:1px;padding-bottom:8px;">${r.label}</div>`;
     if (i < rounds.length - 1) labelsHtml += `<div style="width:28px;flex-shrink:0;"></div>`;
   });
   let bodyHtml = `<div style="display:flex;align-items:flex-start;">`;
   rounds.forEach((r, ri) => {
     const n = r.matches.length;
     const slotH = totalH / n;
-    bodyHtml += `<div style="width:225px;flex-shrink:0;display:flex;flex-direction:column;height:${totalH}px;justify-content:space-around;">`;
+    const colW = TIER_W[r.tier] || 185;
+    bodyHtml += `<div style="width:${colW}px;flex-shrink:0;display:flex;flex-direction:column;height:${totalH}px;justify-content:space-around;">`;
     r.matches.forEach(m => {
-      bodyHtml += `<div style="display:flex;align-items:center;height:${slotH}px;">${card(m, r.type||'')}</div>`;
+      bodyHtml += `<div style="display:flex;align-items:center;height:${slotH}px;">${card(m, r.type||'', r.tier)}</div>`;
     });
     bodyHtml += `</div>`;
     if (ri < rounds.length - 1) {
@@ -280,34 +319,34 @@ const sf=[M.M101,M.M102];
 buildBracket('r32',[
   {label:"32強 6/28–7/3",    matches:r32},
   {label:"16強 7/4–7/7",     matches:r16},
-  {label:"8強 7/9–7/11",     matches:qf},
-  {label:"準決賽 7/14–7/15", matches:sf},
-  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+  {label:"8強 7/9–7/11",     matches:qf, tier:'qf'},
+  {label:"準決賽 7/14–7/15", matches:sf, tier:'sf'},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final', tier:'final'},
 ]);
 buildBracket('r16',[
   {label:"16強 7/4–7/7",     matches:r16},
-  {label:"8強 7/9–7/11",     matches:qf},
-  {label:"準決賽 7/14–7/15", matches:sf},
-  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+  {label:"8強 7/9–7/11",     matches:qf, tier:'qf'},
+  {label:"準決賽 7/14–7/15", matches:sf, tier:'sf'},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final', tier:'final'},
 ]);
 buildBracket('qf',[
-  {label:"8強 7/9–7/11",     matches:qf},
-  {label:"準決賽 7/14–7/15", matches:sf},
-  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+  {label:"8強 7/9–7/11",     matches:qf, tier:'qf'},
+  {label:"準決賽 7/14–7/15", matches:sf, tier:'sf'},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final', tier:'final'},
 ]);
 buildBracket('sf',[
-  {label:"準決賽 7/14–7/15", matches:sf},
-  {label:"決賽 7/19",        matches:[M.M104], type:'final'},
+  {label:"準決賽 7/14–7/15", matches:sf, tier:'sf'},
+  {label:"決賽 7/19",        matches:[M.M104], type:'final', tier:'final'},
 ]);
 
 document.getElementById('final').innerHTML=`
-  <div style="max-width:460px;">
-    ${card(M.M104,'final')}
-    <div style="margin-top:16px;">
-      ${card(M.M103,'third')}
+  <div style="max-width:340px;margin:0 auto;display:flex;flex-direction:column;align-items:center;">
+    ${card(M.M104,'final','final')}
+    <div style="margin-top:20px;">
+      ${card(M.M103,'third','sf')}
     </div>
   </div>
-  <p style="font-size:10px;color:#aaa;margin-top:12px;">※ 所有時間為美東時間（ET）</p>
+  <p style="font-size:10px;color:#aaa;margin-top:12px;text-align:center;">※ 所有時間為美東時間（ET）</p>
 `;
 
 function show(id,el){
