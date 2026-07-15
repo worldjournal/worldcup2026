@@ -226,9 +226,9 @@ const MATCHES = [
   {stage:"sf",date:"2026-07-14",time:"3:00 PM",home:"法國",away:"西班牙",label:"四強",labelClass:"r16",matchId:"M101",venue:"Dallas",tv:["FOX","Telemundo"]},
   {stage:"sf",date:"2026-07-15",time:"3:00 PM",home:"英格蘭",away:"阿根廷",label:"四強",labelClass:"r16",matchId:"M102",venue:"Atlanta",tv:["FOX","Telemundo"]},
 
-  {stage:"final",date:"2026-07-18",time:"5:00 PM",home:"法國",away:"英格蘭/阿根廷 敗者",label:"季軍賽",labelClass:"r16",matchId:"M103",venue:"Miami",tv:["FOX","Telemundo"]},
+  {stage:"final",date:"2026-07-18",time:"5:00 PM",home:"法國",away:"英格蘭",label:"季軍賽",labelClass:"r16",matchId:"M103",venue:"Miami",tv:["FOX","Telemundo"]},
 
-  {stage:"final",date:"2026-07-19",time:"3:00 PM",home:"西班牙",away:"英格蘭/阿根廷 勝者",label:"決賽",labelClass:"r16",matchId:"M104",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
+  {stage:"final",date:"2026-07-19",time:"3:00 PM",home:"西班牙",away:"阿根廷",label:"決賽",labelClass:"r16",matchId:"M104",venue:"New York/New Jersey",tv:["FOX","Telemundo"]},
 ];
 
 const STAGES = [
@@ -278,9 +278,13 @@ function buildDateBar(stageId) {
     btn.dataset.date = d;
     bar.appendChild(btn);
   });
+  // 「決賽」分頁固定預設顯示決賽當天（最後一個日期），不用今天日期或最近日期的邏輯
   let target = dates[0];
-  if (dates.includes(today)) target = today;
-  else {
+  if (stageId === "final") {
+    target = dates[dates.length - 1];
+  } else if (dates.includes(today)) {
+    target = today;
+  } else {
     const upcoming = dates.find(d => d >= today);
     if (upcoming) target = upcoming;
   }
