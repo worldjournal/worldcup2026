@@ -51,6 +51,8 @@
   .goals-3 { color: var(--bronze); font-size: 20px; }
   .goals-other { color: var(--text); }
 
+  td.col-assists { font-size: 14px; color: var(--muted); font-weight: 500; }
+
   .gb-footer { padding: 8px 14px; background: var(--light); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .gb-footer span { font-size: 10px; color: var(--muted); }
   .gb-note { padding: 8px 14px; background: #fffbe8; border-top: 1px solid #f0e8b0; font-size: 11px; color: #7a6a00; }
@@ -116,19 +118,21 @@ async function fetchData() {
     const name = row.c[0]?.v;
     const country = row.c[1]?.v || "";
     const goals = row.c[2]?.v || 0;
+    const assists = row.c[3]?.v || 0;
     if (!name || name === "球員") continue;
-    players.push({ name, country, goals: parseInt(goals) || 0 });
+    players.push({ name, country, goals: parseInt(goals) || 0, assists: parseInt(assists) || 0 });
   }
-  return players.sort((a, b) => b.goals - a.goals);
+  // 排序：進球數優先，同進球數以助攻數排序（符合金靴獎並列判斷原則）
+  return players.sort((a, b) => b.goals - a.goals || b.assists - a.assists);
 }
 
 function render(players) {
   const hasStarted = players.some(p => p.goals > 0);
 
-  // ── 標準競賽排名：同分同名，下一名跳過（先對全部球員排名，再取前五名）──
+  // ── 標準競賽排名：進球+助攻皆相同才算同名次，下一名跳過（先對全部球員排名，再取前五名）──
   let rank = 1;
   const ranked = players.map((p, i) => {
-    if (i > 0 && p.goals < players[i - 1].goals) {
+    if (i > 0 && (p.goals !== players[i - 1].goals || p.assists !== players[i - 1].assists)) {
       rank = i + 1; // 跳到實際位置
     }
     return { ...p, rank };
@@ -149,6 +153,7 @@ function render(players) {
         ${p.country ? `<div style="font-size:10px;color:#888;margin-top:2px;">${flagImg(p.country)}${p.country}</div>` : ''}
       </td>
       <td class="col-goals"><span class="${goalsClass}">${p.goals}</span></td>
+      <td class="col-assists">${p.assists}</td>
     </tr>`;
   }).join("");
 
@@ -158,6 +163,7 @@ function render(players) {
         <th class="col-rank">#</th>
         <th class="col-player">球員</th>
         <th>進球數</th>
+        <th>助攻</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table></div>`;
