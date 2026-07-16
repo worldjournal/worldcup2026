@@ -281,7 +281,7 @@ function buildDateBar(stageId) {
   // 「決賽」分頁固定預設顯示決賽當天（最後一個日期），不用今天日期或最近日期的邏輯
   let target = dates[0];
   if (stageId === "final") {
-    target = dates[dates.length - 1];
+    target = dates[0];
   } else if (dates.includes(today)) {
     target = today;
   } else {
