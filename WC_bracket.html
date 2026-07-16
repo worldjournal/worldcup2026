@@ -357,15 +357,7 @@ function show(id,el){
 }
 
 function autoTab() {
-  const now = new Date();
-  const et = new Date(now.getTime() + (-4*60 - now.getTimezoneOffset()) * 60000);
-  const d = et.getFullYear()*10000 + (et.getMonth()+1)*100 + et.getDate();
-  let tabId;
-  if      (d >= 20260719) tabId = 'final';
-  else if (d >= 20260714) tabId = 'sf';
-  else if (d >= 20260708) tabId = 'qf';
-  else if (d >= 20260704) tabId = 'r16';
-  else                    tabId = 'r32';
+  const tabId = 'final';
   const tab = document.querySelector(`.tab[onclick="show('${tabId}',this)"]`);
   if (tab) show(tabId, tab);
 }
